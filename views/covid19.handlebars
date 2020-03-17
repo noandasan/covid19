@@ -16,7 +16,7 @@
      <link rel="stylesheet" type="text/css" href="/bootstrap/dist/css/bootstrap.css">
      <link rel="stylesheet" type="text/css" href="/@fortawesome/fontawesome-free/css/fontawesome.min.css">
      <link rel="stylesheet" type="text/css" href="/@fortawesome/fontawesome-free/css/all.min.css">
-     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.min.css">
+     <link rel="stylesheet" type="text/css" href="/covid/css/jquery.mCustomScrollbar.min.css">
      <link rel="stylesheet" type="text/css" href="/croppie/croppie.css">
      <link rel="stylesheet" type="text/css" href="/css/nprogress.css">
      <link rel="stylesheet" type="text/css" href="/css/style.css">
@@ -24,9 +24,7 @@
 
 <body>
      <div id="progress"></div>
-     {{#if error}}
-     <div class="alert alert-danger">{{error}}</div>
-     {{/if}}
+
      <div class="container-fluid">
           {{> _sidebar}}
           <div id="content">
@@ -37,35 +35,6 @@
           </div>
           {{> _footer}}
      </div>
-
-     {{!-- <div class="spinner">
-     <div class="spinner-container spinner-border text-success" role="status">
-               <span class="sr-only">Loading...</span>
-          </div>
-     </div> --}}
-     {{> _spinner}}
-      {{> _notification}}
-
-     
-     {{!-- roles --}}
-     <script id="rolestemplate" type="text/x-handlebars-template">
-     {{> _roles.compile}}
-     </script>
-     
-     {{!-- member --}}
-     <script id="memberstemplate" type="text/x-handlebars-template">
-     {{> _members.compile}}
-     </script>
-
-     {{!-- country --}}
-     <script id="countriestemplate" type="text/x-handlebars-template">
-     {{> _countries.compile}}
-     </script>
-
-          {{!-- location --}}
-     <script id="locationstemplate" type="text/x-handlebars-template">
-     {{> _locations.compile}}
-     </script>
 
      <script type="text/javascript" src="/jquery.min.js"></script>
      <script type="text/javascript"  src="/croppie/croppie.js"></script>

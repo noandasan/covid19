@@ -22,7 +22,7 @@ db.Roles = require('../model/roles.model.js')(sequelize, Sequelize);
 db.Roleassigments = require('../model/roleassigments.model.js')(sequelize, Sequelize);
 db.Controlassigments = require('../model/controlassigments.model.js')(sequelize, Sequelize);
 db.Controls = require('../model/controls.model.js')(sequelize, Sequelize);
-
 db.Countries = require('../model/countries.model.js')(sequelize, Sequelize);
+db.Locations = require('../model/locations.model.js')(sequelize, Sequelize);
 
 module.exports = db;

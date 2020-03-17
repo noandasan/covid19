@@ -9,9 +9,9 @@ const _modules = db.Modules;
 const _roles = db.Roles;
 const _users = db.Users;
 
-router.get('/', ensureAuthenticated,myrole, (req, res) => {
-    const systemroles = Menu(req.user.role_id, _roleassigments, _modules);
-    res.render("index/dashboard", { systemroles: systemroles, title: 'Dashboard' })
+router.get('/', (req, res) => {
+   // const systemroles = Menu(req.user.role_id, _roleassigments, _modules);
+    res.render("covid19", {layout: false})
 });
 router.get('/dashboard', ensureAuthenticated,myrole, (req, res) => {
     const systemroles = Menu(req.user.role_id, _roleassigments, _modules);
