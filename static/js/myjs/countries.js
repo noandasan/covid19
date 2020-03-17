@@ -53,7 +53,8 @@ $(document).ready(function () {
                     page: '1'
                   }
 
-                  loadrecords_post('/country/search', data1, 'countriestemplate');
+                  //loadrecords_post('/country/search', data1, 'countriestemplate');
+                  loadrecords_post_final('/country/search', data1, 'countriestemplate','loadcountries');
                   $('#dialog-newCountry').modal('toggle');
                   toastr.success('<i class="fas fa-check-circle"></i> Country successfully saved!');
 
@@ -82,7 +83,9 @@ $(document).ready(function () {
                 page: '1'
               }
 
-              loadrecords_post('/country/search', data1, 'countriestemplate');
+              //loadrecords_post('/country/search', data1, 'countriestemplate');
+              loadrecords_post_final('/country/search', data, 'countriestemplate','loadcountries');
+
               $('#dialog-newCountry').modal('toggle');
               toastr.success('<i class="fas fa-check-circle"></i> Country successfully Updated!');
             }
@@ -108,7 +111,8 @@ $(document).ready(function () {
           page: '1'
         }
         $('#country-searchkey').focus();
-        loadrecords_post('/country/search', data, 'countriestemplate');
+        //loadrecords_post('/country/search', data, 'countriestemplate');
+        loadrecords_post_final('/country/search', data, 'countriestemplate','loadcountries');
       });
     
       $('#country-clear').click(function () {
@@ -124,7 +128,8 @@ $(document).ready(function () {
           page: '1'
         }
         
-        loadrecords_post('/country/search', data, 'countriestemplate');
+       // loadrecords_post('/country/search', data, 'countriestemplate');
+        loadrecords_post_final('/country/search', data, 'countriestemplate','loadcountries');
         $('#country-searchkey').focus();
       });
       
@@ -141,7 +146,8 @@ $(document).ready(function () {
             page: '1'
           }
           $('#country-searchkey').focus();
-          loadrecords_post('/country/search', data, 'countriestemplate');
+//          loadrecords_post('/country/search', data, 'countriestemplate');
+          loadrecords_post_final('/country/search', data, 'countriestemplate','loadcountries');
     });
     $('body').on('click', '.editcountry', function () {
         New=false;
@@ -171,24 +177,19 @@ $(document).ready(function () {
 
 
     //  click on pagination
-  $('#loadroles').on('click', 'a', function () {
+  $('#loadcountries').on('click', 'a', function () {
     let data;
     var searchkey;
     if ($('#countries-expandedsearch').attr('aria-expanded') === "true") {
       var field = $('#country-searchfield').text();
       var searchfield = field.toLowerCase();
-      if (searchfield == 'status') {
-        $('#member-searchkey').hide();
-        $('#member-selectactivenotactive').selectpicker('show');
-        $('#member-searchaction').hide();
-        searchkey = $('#member-selectactivenotactive').val();
-      } else {
+    
 
-        $('#member-searchkey').show();
-        $('#member-selectactivenotactive').selectpicker('hide');
-        $('#member-searchaction').show();
-        searchkey = $('#member-searchkey').val();
-      }
+        $('#country-searchkey').show();
+        $('#country-searchaction').show();
+
+        searchkey = $('#country-searchkey').val();
+      
       data = {
         searchfield: searchfield,
         searchkey: searchkey,
@@ -201,7 +202,8 @@ $(document).ready(function () {
         page: this.id
       }
     }
-    loadrecords_post('/admin/member/search', data, 'memberstemplate');
+
+    loadrecords_post_final('/country/search', data, 'countriestemplate','loadcountries');
   });
   // end of click pagination
 

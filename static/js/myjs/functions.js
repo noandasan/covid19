@@ -29,6 +29,7 @@ function showspinner(element1, element2) {
     });
     hidespinner('spinner', 'spinner-container');
   }
+
   function loadrecords_post(url, data, varsciptname) {
     showspinner('spinner', 'spinner-container');
     $.post(url, data, function (response_json, status) {
@@ -40,6 +41,7 @@ function showspinner(element1, element2) {
     });
     hidespinner('spinner', 'spinner-container');
   }
+
   function loadrecords_get1(url, data, varsciptname) {
     showspinner('spinner', 'spinner-container');
     $.get(url, data, function (response_json, status) {
@@ -48,6 +50,18 @@ function showspinner(element1, element2) {
         var template = Handlebars.compile(source);
         var html = template(response_json);
         $("#loadroles").html(html);
+      // }).fail(function () {
+    });
+    hidespinner('spinner', 'spinner-container');
+  }
+
+  function loadrecords_post_final(url, data, varsciptname, vardisplay) {
+    showspinner('spinner', 'spinner-container');
+    $.post(url, data, function (response_json, status) {
+        var source = $("#"+varsciptname).html();
+        var template = Handlebars.compile(source);
+        var html = template(response_json);
+        $("#"+vardisplay).html(html);
       // }).fail(function () {
     });
     hidespinner('spinner', 'spinner-container');
