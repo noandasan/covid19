@@ -1,0 +1,89 @@
+ <table class="table table-hover table-sm table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Item</th>
+                <th scope="col">Role</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            \{{#each roles}}
+            <tr>
+                <td width="10%">\{{row_number}}</td>
+                <td width="80%">\{{rolename}}</td>
+                <td width="10%">
+                <ul>
+                      <li>
+                        <div class="custom-control custom-switch">
+                        <input type="checkbox" \{{#if status}} checked \{{/if}} class="custom-control-input roles"
+                            id="\{{role_id}}">
+                        <label class="custom-control-label" for="\{{role_id}}"></label>
+                    </div>
+                      </li>
+                    <li>
+                        <span class="float-right" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                <i id="\{{role_id}}" class="fas fa-edit editroles"></i>
+                        </span>
+                    </li>
+                  </ul>
+                </td>
+            </tr>
+            \{{else}}
+            <table class="table table-hover table-sm table-striped notfoundrecords">
+                <tr>
+                    <td width="100%">No record found</td>
+                </tr>
+             </table>  
+            \{{/each}}
+        </tbody>
+    </table>
+\{{#ifCond pagination.totalrecord '>'0}}
+<nav class="footerrecord" aria-label="...">
+        <span style="float: left;"> Record: \{{pagination.off}} to \{{pagination.bong}} of \{{pagination.totalrecord}}, Page: \{{pagination.page}} of \{{pagination.pageCount}} </span>
+        <ul class="pagination pagination-sm justify-content-end">
+            \{{#paginate pagination type="first"}}
+            <li \{{#if disabled}} class="page-item disabled" \{{else}} class="page-item" \{{/if}}>
+                <a class="page-link" id="\{{n}}" href="javascript:void(0);" aria-label="First">
+                    <span aria-hidden="true"><i class="fas fa-angle-double-left"></i></span>
+                </a>
+            </li>
+            \{{/paginate}}
+
+            \{{#paginate pagination type="previous"}}
+            <li \{{#if disabled}} class="page-item disabled" \{{else}} class="page-item" \{{/if}}>
+                <a class="page-link" id="\{{n}}" href="javascript:void(0);" aria-label="Previous">
+                    <span aria-hidden="true"><i class="fas fa-angle-left"></i></span>
+                </a>
+            </li>
+            \{{/paginate}}
+            \{{#paginate pagination type="middle" limit="5"}}
+            \{{#if active}}
+            <li class="page-item active" aria-current="page">
+                <span class="page-link">
+                    \{{n}}
+                    <span class="sr-only">(current)</span>
+                </span>
+            </li>
+            \{{else}}
+
+            <li class="page-item"><a class="page-link" id="\{{n}}" href="javascript:void(0);">\{{n}}</a></li>
+            \{{/if}}
+            \{{/paginate}}
+
+            \{{#paginate pagination type="next"}}
+            <li \{{#if disabled}} class="page-item disabled" \{{else}} class="page-item" \{{/if}}>
+                <a class="page-link" id="\{{n}}" href="javascript:void(0);" aria-label="Next">
+                    <span aria-hidden="true"><i class="fas fa-angle-right"></i></span>
+                </a>
+            </li>
+            \{{/paginate}}
+            \{{#paginate pagination type="last"}}
+            <li \{{#if disabled}} class="page-item disabled" \{{else}} class="page-item" \{{/if}}>
+                <a class="page-link" id="\{{n}}" href="javascript:void(0);" aria-label="Last">
+                    <span aria-hidden="true"><i class="fas fa-angle-double-right"></i></span>
+                </a>
+            </li>
+            \{{/paginate}}
+        </ul>
+    </nav>
+  \{{/ifCond}}

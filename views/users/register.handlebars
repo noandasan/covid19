@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{title}}</title>
+    <link rel="stylesheet" type="text/css" href="/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-8 col-md-5 mx-auto mt-5">
+               
+                <div class="card card-body border-primary p-5">
+                    <img class="logo" src="/img/biometric-logo.png">
+                      <h3 class="text-center">Register</h3>
+                        {{> _msg}}
+    {{> _errors}}
+                     <form method="post" action="/users/register">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input autofocus type="email" name="email" value="{{email}}" placeholder="Email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" name="password" value="{{password}}" placeholder="password" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Retype Password</label>
+                            <input type="password" name="password2" value="{{password2}}" placeholder="Retype password" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary float-right">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/js/jquery-3.4.1.slim.min.js"></script>
+    <script type="text/javascript" src="/js/popper.min.js"></script>
+    <script type="text/javascript" src="/bootstrap/dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>

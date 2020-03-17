@@ -1,0 +1,82 @@
+.btn {
+    font-size: 13px;
+}
+
+
+
+.btn-success-mod {
+    background-color: #1bb933;
+    border-color: #1bb933;
+    color: white;
+}
+
+.btn-success-mod:hover {
+    background-color: #0da825;
+    color: white;
+}
+
+.btn-light-mod {
+    background-color: #adb5bd;
+    border-color: #adb5bd;
+    color: white;
+}
+
+.btn-light-mod:hover {
+    background-color: #adb5bd;
+    color: white;
+}
+
+.btn-secondary-mod {
+    background-color: #f6f6f6;
+    border-color: #cccccc;
+}
+
+.btn-secondary-mod:hover {
+    background-color: #fff;
+    border-color: #cccccc;
+}
+
+.btn-warning-mod {
+    background-color: #ffa10d;
+    border-color: #ffa10d;
+    color: white;
+}
+
+.btn-warning-mod:hover {
+    color: white;
+}
+
+.btn-modal-head {
+    background-color: #3b4c6c;
+    color: white;
+    font-size: 14px;
+}
+
+.border-semiblack-mod {
+    border-color: #3b4c6c;
+}
+
+.border-green-mod {
+    border-color: #0da825;
+}
+
+/* custombuttonsmall */
+.custombuttonsmall{
+    border: solid thin #ccd0d5;
+    border-radius: 2px;
+    background-color: #f5f6f7;
+    color: #4b4f56;
+    font-size: 13px;
+    padding: 4px 15px;
+}
+.custombuttonsmall[disabled]{
+    cursor: default;
+    pointer-events: none;
+}
+.custombuttonsmall:hover{
+    background-color: #ebedf0;
+}
+.custombuttonsmall i{
+    padding: 0px 3px; 
+    font-size: 13px;
+}

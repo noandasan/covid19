@@ -1,0 +1,40 @@
+<nav id="sidebar">
+    <div class="sidebar-header btn-modal-head">
+        <h3><span></span>DigiBio</h3>
+
+    </div>
+    <div id="sidebar-menu">
+        <ul class="list-unstyled components">
+            <h6 class="ml-2">Main Navigation</h6>
+            {{#each systemroles}}
+            <li>
+ 
+                {{#if_equal child.length 0}}
+                <a href="{{path}}"><i class="{{icon}}"></i>
+                    {{modulename}} </a>
+                {{else}}
+                <a href="#A{{module_id}}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle menu"><i
+                        class="{{icon}}"></i> {{modulename}}</a>
+                {{/if_equal}}
+            
+                <ul class="collapse sidebar list-unstyled" id="A{{module_id}}">
+                    {{#each this.child}}
+                    <li>
+                        <a href="{{path}}" id="{{modulename}}"><i class="{{icon}}"></i> {{modulename}}</a>
+                    </li>
+                    {{/each}}
+                   
+                </ul>
+            </li>
+            {{else}}
+            <p>Refresh</p>
+            {{/each}}
+        </ul>
+        <ul class="list-unstyled CTAs">
+
+            <li>
+                <a href="#" class="article">Help</a>
+            </li>
+        </ul>
+    </div>
+</nav>

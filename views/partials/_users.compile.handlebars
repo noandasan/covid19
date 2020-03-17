@@ -1,0 +1,80 @@
+ <table class="table table-hover table-sm table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            \{{#each users}}
+            <tr>
+                <td>\{{id}}</td>
+                <td>\{{name}}</td>
+                  <td>\{{email}}</td>
+                <td>
+
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" \{{#if status}} checked \{{/if}} class="custom-control-input roles"
+                            id="\{{role_id}}">
+                       
+                        <label class="custom-control-label" for="\{{role_id}}"></label>
+                    </div>
+                </td>
+            </tr>
+            \{{else}}
+            <p>No Roles Found</p>
+            \{{/each}}
+        </tbody>
+    </table>
+
+<nav class="footerrecord" aria-label="...">
+        <span style="float: left;"> Page: \{{pagination.page}} of \{{pagination.pageCount}} </span>
+        <ul class="pagination pagination-sm justify-content-end">
+            \{{#paginate pagination type="first"}}
+            <li \{{#if disabled}} class="page-item disabled" \{{else}} class="page-item" \{{/if}}>
+                <a class="page-link" id="\{{n}}" href="javascript:void(0);" aria-label="First">
+                    <span aria-hidden="true"><i class="fas fa-angle-left"></i></span>
+                </a>
+            </li>
+            \{{/paginate}}
+
+            \{{#paginate pagination type="previous"}}
+            <li \{{#if disabled}} class="page-item disabled" \{{else}} class="page-item" \{{/if}}>
+                <a class="page-link" id="\{{n}}" href="javascript:void(0);" aria-label="Previous">
+                    <span aria-hidden="true"><i class="fas fa-angle-double-left"></i></span>
+                </a>
+            </li>
+            \{{/paginate}}
+            \{{#paginate pagination type="middle" limit="5"}}
+            \{{#if active}}
+            <li class="page-item active" aria-current="page">
+                <span class="page-link">
+                    \{{n}}
+                    <span class="sr-only">(current)</span>
+                </span>
+            </li>
+            \{{else}}
+
+            <li class="page-item"><a class="page-link" id="\{{n}}" href="javascript:void(0);">\{{n}}</a></li>
+            \{{/if}}
+            \{{/paginate}}
+
+            \{{#paginate pagination type="next"}}
+            <li \{{#if disabled}} class="page-item disabled" \{{else}} class="page-item" \{{/if}}>
+                <a class="page-link" id="\{{n}}" href="javascript:void(0);" aria-label="Next">
+                    <span aria-hidden="true"><i class="fas fa-angle-double-right"></i></span>
+                </a>
+            </li>
+            \{{/paginate}}
+            \{{#paginate pagination type="last"}}
+            <li \{{#if disabled}} class="page-item disabled" \{{else}} class="page-item" \{{/if}}>
+                <a class="page-link" id="\{{n}}" href="javascript:void(0);" aria-label="Last">
+                    <span aria-hidden="true"><i class="fas fa-angle-right"></i></span>
+                </a>
+            </li>
+            \{{/paginate}}
+        </ul>
+    </nav>
+  

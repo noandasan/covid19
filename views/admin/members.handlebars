@@ -1,0 +1,345 @@
+<div class="mt-5">
+    <div class="row topcont">
+        <div class="col-6">
+            <h4 class="px-2 mb-1">Members</h4>
+        </div>
+        <div class="col-6 text-right px-2">
+            <button type="button" id="member-expandedsearch" class="btn btn-light-mod text-light" data-toggle="collapse"
+                data-target="#collapsesearch" aria-expanded="false" aria-controls="collapsesearch">
+                <i class="fas fa-arrows-alt-v"></i>
+            </button>
+            <button type="button" data-backdrop="static" data-keyboard="false" id="btn-NewMember"
+                class="btn btn-success-mod px-3 text-light">
+                <i class="fa fa-plus"></i>
+                New Member
+            </button>
+
+        </div>
+    </div>
+    <div class="searchhidden collapse" id="collapsesearch">
+        <div class="input-group input-group-sm m-2">
+            <div class="input-group-prepend">
+                <button class="btn btn-success dropdown-toggle" id="member-searchfield" type="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Name</button>
+                <div id="member-fields" class="dropdown-menu">
+                    <a class="dropdown-item" id="Name" href="javascript:void(0);">Name</a>
+                    <a class="dropdown-item" id="Email" href="javascript:void(0);">Email</a>
+                    <a class="dropdown-item" id="RoleName" href="javascript:void(0);">RoleName</a>
+                    <a class="dropdown-item" id="Status" href="javascript:void(0);">Status</a>
+                </div>
+            </div>
+            <input type="text" id="member-searchkey" class="form-control border-success searchkey" aria-label="">
+
+            <select id="member-selectactivenotactive" class="selectpicker statusselect">
+                <option value="1">Active</option>
+                <option value="0">In Active</option>
+            </select>
+
+
+
+            <div id="member-searchaction" class="btn-group btn-group-sm ml-1" role="group" aria-label="">
+                <button type="button" id="member-search" class="btn btn-success" data-toggle="tooltip"
+                    data-placement="bottom" title="search"><i class="fas fa-search"></i></button>
+                <button type="button" id="member-clear" class="btn btn-success" data-toggle="tooltip"
+                    data-placement="bottom" title="clear"><i class="fas fa-eraser"></i></button>
+                <button type="button" id="member-refresh" class="btn btn-success" data-toggle="tooltip"
+                    data-placement="bottom" title="refresh"><i class="fas fa-sync"></i></button>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div id="loadroles" class="shadow-sm p-2 bg-white">
+    <table class="table table-hover table-sm table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Item</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Rolename</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each members}}
+            <tr>
+                <td width="10%">{{row_number}}</td>
+                <td width="30%">{{name}}</td>
+                <td width="30%">{{email}}</td>
+                <td width="20%">{{rolename}}</td>
+                <td width="10%">
+                    <ul>
+                        <li>
+                            {{#if_equal id 1}}
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" checked disabled class="custom-control-input"
+                                    id="{{id}}">
+                                <label class="custom-control-label" for="{{id}}"></label>
+                            </div>
+                            {{else}}
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" {{#if status}} checked {{/if}} class="custom-control-input onoff"
+                                    id="{{id}}">
+                                <label class="custom-control-label" for="{{id}}"></label>
+                            </div>
+                            {{/if_equal}}
+                        </li>
+                        <li>
+                            <span class="float-right" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                <i id="{{id}}" class="fas fa-edit editmember"></i>
+                            </span>
+                        </li>
+
+                    </ul>
+                </td>
+            </tr>
+            {{else}}
+            <table class="table table-hover table-sm table-striped notfoundrecords">
+                <tr>
+                    <td width="100%">No Members Found</td>
+                </tr>
+            </table>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <nav class="footerrecord" aria-label="...">
+
+        <span style="float: left;">Record: {{pagination.off}} to {{pagination.bong}} of {{pagination.totalrecord}},
+            Page: {{pagination.page}} of {{pagination.pageCount}} </span>
+
+
+        <ul class="pagination pagination-sm justify-content-end">
+            {{#paginate pagination type="first"}}
+            <li {{#if disabled}} class="page-item disabled" {{else}} class="page-item" {{/if}}>
+                <a class="page-link bong" id="{{n}}" href="javascript:void(0);" aria-label="First">
+                    <span aria-hidden="true"><i class="fas fa-angle-double-left"></i></span>
+                </a>
+            </li>
+            {{/paginate}}
+
+            {{#paginate pagination type="previous"}}
+            <li {{#if disabled}} class="page-item disabled" {{else}} class="page-item" {{/if}}>
+                <a class="page-link" id="{{n}}" href="javascript:void(0);" aria-label="Previous">
+                    <span aria-hidden="true"><i class="fas fa-angle-left"></i></span>
+                </a>
+            </li>
+            {{/paginate}}
+            {{#paginate pagination type="middle" limit="5"}}
+            {{#if active}}
+            <li class="page-item active" aria-current="page">
+                <span class="page-link">
+                    {{n}}
+                    <span class="sr-only">(current)</span>
+                </span>
+            </li>
+            {{else}}
+
+            <li class="page-item"><a class="page-link" id="{{n}}" href="javascript:void(0);">{{n}}</a></li>
+            {{/if}}
+            {{/paginate}}
+
+            {{#paginate pagination type="next"}}
+            <li {{#if disabled}} class="page-item disabled" {{else}} class="page-item" {{/if}}>
+                <a class="page-link" id="{{n}}" href="javascript:void(0);" aria-label="Next">
+                    <span aria-hidden="true"><i class="fas fa-angle-right"></i></span>
+                </a>
+            </li>
+            {{/paginate}}
+            {{#paginate pagination type="last"}}
+            <li {{#if disabled}} class="page-item disabled" {{else}} class="page-item" {{/if}}>
+                <a class="page-link" id="{{n}}" href="javascript:void(0);" aria-label="Last">
+                    <span aria-hidden="true"><i class="fas fa-angle-double-right"></i></span>
+                </a>
+            </li>
+            {{/paginate}}
+        </ul>
+    </nav>
+
+</div>
+
+{{!-- New Edit User --}}
+<div class="modal fade" id="dialog-newMember" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
+    <form method="POST" id="formMember">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header btn-modal-head">
+                    <h5 class="modal-title" id="title">New Member</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group row">
+                                   <div id="OpenImgUpload" class="memberprofile">
+                                        <img id="image-profile" src="img/profile.jpg">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">Email</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" autocomplete="off" required="required" id="email"
+                                            name="email" value="" class="form-control form-control-sm"
+                                            placeholder="Email">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">Name</label>
+                                    <div class="col-sm-10">
+                                        <input autofocus type="text" autocomplete="off" required="required" id="name" name="name"
+                                            class="form-control form-control-sm" placeholder="Name" value="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">Role</label>
+                                    <div class="col-sm-10 selectdis">
+                                        <div class="errorplacement"><select id='role_id' class="selectpicker myselect"
+                                                required="required" data-live-search="true">
+                                                <option value=''>Select Role</option>
+                                                {{#each roles}}
+                                                <option value={{role_id}}>{{rolename}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+
+                                </div>
+                                <div class="form-group row pass">
+                                    <label class="col-sm-3 col-form-label col-form-label-sm">Password</label>
+                                    <div class="col-sm-5">
+                                        <input type="password" autocomplete="off" required="required" id="password"
+                                            name="password" value="" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                                <div class="form-group row pass">
+                                    <label class="col-sm-3 col-form-label col-form-label-sm">Re Password</label>
+                                    <div class="col-sm-5">
+                                        <input type="password" autocomplete="off" required="required" id="repassword"
+                                            name="repassword" value="" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                                <div class="form-group row reset">
+                                    <label class="col-sm-2 col-form-label col-form-label-sm"></label>
+                                    <div class="col-sm-5">
+                                        <button type="button" id="resetpass" class="btn btn-warning-mod">Reset
+                                            Password</button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="controlmanagement">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary-mod" data-dismiss="modal">Close</button>
+                    <button type="submit" id="Save" class="btn btn-success-mod">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{{!-- reset password --}}
+<div class="modal fade" id="dialog-resetpassword" tabindex="-1" role="dialog" aria-labelledby="title"
+    aria-hidden="true">
+    <form method="POST" id="formMemberReset">
+        <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header btn-warning-mod">
+                    <h5 class="modal-title" id="title">Reset Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label col-form-label-sm">Password</label>
+                                    <div class="col-sm-9">
+                                        <input type="hidden" id="id" name="id" value="">
+                                        <input type="password" autocomplete="off" required="required" id="resetpassword"
+                                            name="resetpassword" value="" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label col-form-label-sm">Re-password</label>
+                                    <div class="col-sm-9">
+                                        <input type="password" autocomplete="off" required="required"
+                                            id="resetrepassword" name="resetrepassword"
+                                            class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary-mod" data-dismiss="modal">Close</button>
+                    <button type="submit" id="reset" class="btn btn-success-mod">Reset</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal fade" id="dialog-CropPicture" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header btn-warning-mod">
+                    <h5 class="modal-title" id="title">Edit Picture</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body modal-picture-edit">
+                    <div id="upload-image"></div>
+                    <div id="image-control">
+
+                        <div class="btn-group btn-group-sm ml-1" role="group" aria-label="">
+                            <button type="button" id="image-rotate-left" class="btn btn-warning-mod"
+                                data-toggle="tooltip" data-placement="bottom" title="Rotate left"><i
+                                    class="fas fa-undo-alt"></i></button>
+                            <button type="button" id="image-rotate-right" class="btn btn-warning-mod"
+                                data-toggle="tooltip" data-placement="bottom" title="Rotate right"><i
+                                    class="fas fa-redo-alt"></i></button>
+                        </div>
+
+                        <div class="btn-group btn-group-sm ml-1" role="group" aria-label="">
+                            <button type="button" id="image-flip-horizontal" class="btn btn-warning-mod"
+                                data-toggle="tooltip" data-placement="bottom" title="Flip horizontal"><i
+                                    class="fas fa-arrows-alt-h"></i></button>
+                            <button type="button" id="image-flip-vertical" class="btn btn-warning-mod"
+                                data-toggle="tooltip" data-placement="bottom" title="Flip vertical"><i
+                                    class="fas fa-arrows-alt-v"></i></button>
+                        </div>
+                        <div class="btn-group btn-group-sm ml-1" role="group" aria-label="">
+                            <button type="button" id="image-browse" class="btn btn-success-mod" data-toggle="tooltip"
+                                data-placement="bottom" title="Browse Image"><i class="fas fa-camera"></i></button>
+                        </div>
+                    </div>
+
+
+                    <br>
+                    <input type="file" id="imgupload" style="display: none;"
+                        accept="image/x-png,image/gif,image/jpeg" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="Close-image-generator" class="btn btn-secondary-mod" data-dismiss="modal">Close</button>
+                    <button type="button" id="Crop-image" class="btn btn-success-mod">Create Picture</button>
+                </div>
+            </div>
+        </div>
+</div>

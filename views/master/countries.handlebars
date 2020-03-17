@@ -1,0 +1,172 @@
+<div class="mt-5">
+    <div class="row topcont">
+        <div class="col-6">
+            <h4 class="px-2 mb-1">Countries</h4>
+        </div>
+        <div class="col-6 text-right px-2">
+            <button type="button" id="countries-expandedsearch" class="btn btn-light-mod text-light" data-toggle="collapse"
+                data-target="#collapsesearch" aria-expanded="false" aria-controls="collapsesearch">
+                <i class="fas fa-arrows-alt-v"></i>
+            </button>
+            <button type="button" data-backdrop="static" data-keyboard="false" id="btn-NewCountry"
+                class="btn btn-success-mod px-3 text-light">
+                <i class="fa fa-plus"></i>
+                New Country
+            </button>
+
+        </div>
+    </div>
+    <div class="searchhidden collapse" id="collapsesearch">
+        <div class="input-group input-group-sm m-2">
+            <div class="input-group-prepend">
+                <button class="btn btn-success dropdown-toggle" id="country-searchfield" type="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Country</button>
+                <div id="country-fields" class="dropdown-menu">
+                    <a class="dropdown-item" id="Country" href="javascript:void(0);">Country</a>
+                </div>
+            </div>
+            <input type="text" id="country-searchkey" class="form-control border-success searchkey" aria-label="">
+
+            <div id="country-searchaction" class="btn-group btn-group-sm ml-1" role="group" aria-label="">
+                <button type="button" id="country-search" class="btn btn-success" data-toggle="tooltip"
+                    data-placement="bottom" title="search"><i class="fas fa-search"></i></button>
+                <button type="button" id="country-clear" class="btn btn-success" data-toggle="tooltip"
+                    data-placement="bottom" title="clear"><i class="fas fa-eraser"></i></button>
+                <button type="button" id="country-refresh" class="btn btn-success" data-toggle="tooltip"
+                    data-placement="bottom" title="refresh"><i class="fas fa-sync"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="loadroles" class="shadow-sm p-2 bg-white">
+    <table class="table table-hover table-sm table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Item</th>
+                <th scope="col">Country</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each country}}
+            <tr>
+                <td width="10%">{{row_number}}</td>
+                <td width="85%">{{country}}</td>
+                <td width="5%">
+                    <ul>
+                        <li>
+                            <span class="float-right" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                <i id="{{country_id}}" class="fas fa-edit editcountry"></i>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="float-right" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                                <i id="{{country_id}}" class="fas fa-trash-alt"></i>
+                            </span>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+            {{else}}
+            <table class="table table-hover table-sm table-striped notfoundrecords">
+                <tr>
+                    <td width="100%">No Country Found</td>
+                </tr>
+            </table>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <nav class="footerrecord" aria-label="...">
+        <span style="float: left;">Record: {{pagination.off}} to {{pagination.bong}} of {{pagination.totalrecord}},
+            Page: {{pagination.page}} of {{pagination.pageCount}} </span>
+
+        <ul class="pagination pagination-sm justify-content-end">
+            {{#paginate pagination type="first"}}
+            <li {{#if disabled}} class="page-item disabled" {{else}} class="page-item" {{/if}}>
+                <a class="page-link bong" id="{{n}}" href="javascript:void(0);" aria-label="First">
+                    <span aria-hidden="true"><i class="fas fa-angle-double-left"></i></span>
+                </a>
+            </li>
+            {{/paginate}}
+
+            {{#paginate pagination type="previous"}}
+            <li {{#if disabled}} class="page-item disabled" {{else}} class="page-item" {{/if}}>
+                <a class="page-link" id="{{n}}" href="javascript:void(0);" aria-label="Previous">
+                    <span aria-hidden="true"><i class="fas fa-angle-left"></i></span>
+                </a>
+            </li>
+            {{/paginate}}
+            {{#paginate pagination type="middle" limit="5"}}
+            {{#if active}}
+            <li class="page-item active" aria-current="page">
+                <span class="page-link">
+                    {{n}}
+                    <span class="sr-only">(current)</span>
+                </span>
+            </li>
+            {{else}}
+
+            <li class="page-item"><a class="page-link" id="{{n}}" href="javascript:void(0);">{{n}}</a></li>
+            {{/if}}
+            {{/paginate}}
+
+            {{#paginate pagination type="next"}}
+            <li {{#if disabled}} class="page-item disabled" {{else}} class="page-item" {{/if}}>
+                <a class="page-link" id="{{n}}" href="javascript:void(0);" aria-label="Next">
+                    <span aria-hidden="true"><i class="fas fa-angle-right"></i></span>
+                </a>
+            </li>
+            {{/paginate}}
+            {{#paginate pagination type="last"}}
+            <li {{#if disabled}} class="page-item disabled" {{else}} class="page-item" {{/if}}>
+                <a class="page-link" id="{{n}}" href="javascript:void(0);" aria-label="Last">
+                    <span aria-hidden="true"><i class="fas fa-angle-double-right"></i></span>
+                </a>
+            </li>
+            {{/paginate}}
+        </ul>
+    </nav>
+</div>
+
+
+{{!-- New Country --}}
+<div class="modal fade" id="dialog-newCountry" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
+    <form method="POST" id="formCountry">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header btn-modal-head">
+                    <h5 class="modal-title" id="title">New Country</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">Country</label>
+                                    <div class="col-sm-10">
+                                        <input autofocus type="text" autocomplete="off" required="required" id="country"
+                                            name="country" value="" class="form-control form-control-sm"
+                                            placeholder="Country">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="controlmanagement">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary-mod" data-dismiss="modal">Close</button>
+                    <button type="submit" id="Save" class="btn btn-success-mod">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

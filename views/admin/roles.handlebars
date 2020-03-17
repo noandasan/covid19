@@ -1,0 +1,186 @@
+
+<div class="mt-5">
+    <div class="row topcont">
+        <div class="col-6">
+            <h4 class="px-2 mb-1">Roles</h4>
+        </div>
+        <div class="col-6 text-right px-2">
+            <button type="button" id="expandedsearch" class="btn btn-light-mod text-light" data-toggle="collapse"
+                data-target="#collapsesearch" aria-expanded="false" aria-controls="collapsesearch">
+                <i class="fas fa-arrows-alt-v"></i>
+            </button>
+            <button type="button" data-backdrop="static" data-keyboard="false" id="btn-NewRole"
+                class="btn btn-success-mod px-3 text-light">
+                <i class="fa fa-plus"></i>
+                New Role
+            </button>
+
+        </div>
+    </div>
+    <div class="searchhidden collapse" id="collapsesearch">
+        <div class="input-group input-group-sm m-2">
+            <div class="input-group-prepend">
+                <button class="btn btn-success dropdown-toggle" id="searchfield" type="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">Rolename</button>
+                <div class="dropdown-menu fields">
+                    <a class="dropdown-item" id="Rolename" href="javascript:void(0);">Rolename</a>
+                    <a class="dropdown-item" id="Status" href="javascript:void(0);">Status</a>
+                </div>
+            </div>
+            <input type="text" id="searchkey" class="form-control border-success searchkey" aria-label="">
+
+            <select id="selectactivenotactive" class="selectpicker statusselect">
+               <option value="1">Active</option>
+               <option value="0">In Active</option>
+            </select>
+
+            
+
+            <div class="btn-group btn-group-sm ml-1 searchaction" role="group" aria-label="">
+                <button type="button" id="search" class="btn btn-success" data-toggle="tooltip" data-placement="bottom"
+                    title="search"><i class="fas fa-search"></i></button>
+                <button type="button" id="clear" class="btn btn-success" data-toggle="tooltip" data-placement="bottom"
+                    title="clear"><i class="fas fa-eraser"></i></button>
+                <button type="button" id="refresh" class="btn btn-success" data-toggle="tooltip" data-placement="bottom"
+                    title="refresh"><i class="fas fa-sync"></i></button>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div id="loadroles" class="shadow-sm p-2 bg-white">
+    <table class="table table-hover table-sm table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Item</th>
+                <th scope="col">Role</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each roles}}
+            <tr>
+                <td width="10%">{{row_number}}</td>
+                <td width="80%">{{rolename}}</td>
+                <td width="10%">
+                    <ul>
+                        <li>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" {{#if status}} checked {{/if}} class="custom-control-input roles"
+                                    id="{{role_id}}">
+                                <label class="custom-control-label" for="{{role_id}}"></label>
+                            </div>
+
+                        </li>
+                        <li>
+                            <span class="float-right" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                <i id="{{role_id}}" class="fas fa-edit editroles"></i>
+                            </span>
+                        </li>
+                       
+                    </ul>
+                </td>
+            </tr>
+            {{else}}
+             <table class="table table-hover table-sm table-striped notfoundrecords">
+                <tr>
+                    <td width="100%">No Roles Found</td>
+                </tr>
+             </table>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <nav class="footerrecord" aria-label="...">
+
+        <span style="float: left;">Record: {{pagination.off}} to {{pagination.bong}} of {{pagination.totalrecord}},
+            Page: {{pagination.page}} of {{pagination.pageCount}} </span>
+
+
+        <ul class="pagination pagination-sm justify-content-end">
+            {{#paginate pagination type="first"}}
+            <li {{#if disabled}} class="page-item disabled" {{else}} class="page-item" {{/if}}>
+                <a class="page-link bong" id="{{n}}" href="javascript:void(0);" aria-label="First">
+                    <span aria-hidden="true"><i class="fas fa-angle-double-left"></i></span>
+                </a>
+            </li>
+            {{/paginate}}
+
+            {{#paginate pagination type="previous"}}
+            <li {{#if disabled}} class="page-item disabled" {{else}} class="page-item" {{/if}}>
+                <a class="page-link" id="{{n}}" href="javascript:void(0);" aria-label="Previous">
+                    <span aria-hidden="true"><i class="fas fa-angle-left"></i></span>
+                </a>
+            </li>
+            {{/paginate}}
+            {{#paginate pagination type="middle" limit="5"}}
+            {{#if active}}
+            <li class="page-item active" aria-current="page">
+                <span class="page-link">
+                    {{n}}
+                    <span class="sr-only">(current)</span>
+                </span>
+            </li>
+            {{else}}
+
+            <li class="page-item"><a class="page-link" id="{{n}}" href="javascript:void(0);">{{n}}</a></li>
+            {{/if}}
+            {{/paginate}}
+
+            {{#paginate pagination type="next"}}
+            <li {{#if disabled}} class="page-item disabled" {{else}} class="page-item" {{/if}}>
+                <a class="page-link" id="{{n}}" href="javascript:void(0);" aria-label="Next">
+                    <span aria-hidden="true"><i class="fas fa-angle-right"></i></span>
+                </a>
+            </li>
+            {{/paginate}}
+            {{#paginate pagination type="last"}}
+            <li {{#if disabled}} class="page-item disabled" {{else}} class="page-item" {{/if}}>
+                <a class="page-link" id="{{n}}" href="javascript:void(0);" aria-label="Last">
+                    <span aria-hidden="true"><i class="fas fa-angle-double-right"></i></span>
+                </a>
+            </li>
+            {{/paginate}}
+        </ul>
+    </nav>
+
+</div>
+
+<div class="modal fade" id="dialog-newRole" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
+    <form method="POST" id="formroles">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header btn-modal-head">
+                    <h5 class="modal-title" id="title">New Role</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label class="col-sm-1 col-form-label col-form-label-sm">Role</label>
+                        <div class="col-sm-7">
+                            <input autofocus type="text" autocomplete="off" required="required" id="rolename" name="rolename"
+                                class="form-control form-control-sm" id="role" placeholder="Role">
+                        </div>
+
+
+                    </div>
+
+                     <div class="controlmanagement">
+
+                   
+
+                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary-mod" data-dismiss="modal">Close</button>
+                    <button type="submit" id="Save" class="btn btn-success-mod">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
