@@ -166,7 +166,7 @@ $(document).ready(function () {
             $('#longitude').val(response_json.locations[0].longitude);
         });
 
-        $('#title').text('Edit Location');
+        $('#title').text('Edit Location1');
         $('#Save').text('Save Changes');
 
 

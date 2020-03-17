@@ -5,7 +5,8 @@ $(document).ready(function () {
     $('#btn-NewLocation').click(function(){
         New=true;
         $('#location').val('');
-       
+        $('#title').text('New Location');
+        $('#Save').text('Save');
         $('#dialog-newLocation').modal({
             keyboard: false
         });
@@ -153,7 +154,7 @@ $(document).ready(function () {
 //          loadrecords_post('/country/search', data, 'countriestemplate');
           loadrecords_post_final('/location/search', data, 'locationstemplate','loadlocations');
     });
-    $('body').on('click', '.editcountry', function () {
+    $('body').on('click', '.editlocation', function () {
         New=false;
         id = this.id;
         

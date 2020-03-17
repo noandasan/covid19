@@ -5,12 +5,6 @@ function includeJs(jsFilePath) {
     document.body.appendChild(js);
 }
 
-includeJs("/js/myjs/bootstrap-select.js");
-includeJs("/js/myjs/toastr.js");
-
-includeJs("/js/myjs/main.js");
-includeJs("/js/myjs/roles.js");
-includeJs("/js/myjs/members.js");
-includeJs("/js/myjs/countries.js");
-includeJs("/js/myjs/locations.js");
-includeJs("/js/myjs/functions.js");
+includeJs("/covid/js/myjs/toastr.js");
+includeJs("/covid/js/myjs/main.js");
+includeJs("/covid/js/myjs/functions.js");

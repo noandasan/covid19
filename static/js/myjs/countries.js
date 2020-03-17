@@ -5,7 +5,9 @@ $(document).ready(function () {
     $('#btn-NewCountry').click(function(){
         New=true;
         $('#country').val('');
-       
+        $('#title').text('New Country');
+        $('#Save').text('Save');
+
         $('#dialog-newCountry').modal({
             keyboard: false
         });
@@ -152,7 +154,9 @@ $(document).ready(function () {
     $('body').on('click', '.editcountry', function () {
         New=false;
         id = this.id;
-        
+        $('#title').text('Edit Country');
+        $('#Save').text('Save Changes');
+
         let data = {
             id: id
         }
@@ -160,9 +164,7 @@ $(document).ready(function () {
             $('#country').val(response_json.country[0].country);
         });
 
-        $('#title').text('Edit Country');
-        $('#Save').text('Save Changes');
-
+       
 
         $('#dialog-newCountry').modal({
             keyboard: false

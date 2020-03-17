@@ -17,34 +17,81 @@
      <link rel="stylesheet" type="text/css" href="/@fortawesome/fontawesome-free/css/fontawesome.min.css">
      <link rel="stylesheet" type="text/css" href="/@fortawesome/fontawesome-free/css/all.min.css">
      <link rel="stylesheet" type="text/css" href="/covid/css/jquery.mCustomScrollbar.min.css">
-     <link rel="stylesheet" type="text/css" href="/croppie/croppie.css">
-     <link rel="stylesheet" type="text/css" href="/css/nprogress.css">
-     <link rel="stylesheet" type="text/css" href="/css/style.css">
+     <link rel="stylesheet" type="text/css" href="/covid/css/nprogress.css">
+     <link rel="stylesheet" type="text/css" href="/covid/css/style.css">
+
+     <script>
+      var map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('content'), {
+          zoom: 5,
+          center: {lat: 23.550627, lng: 45.225587},
+          mapTypeId: 'terrain',
+           zoomControl: true,
+  mapTypeControl: false,
+  scaleControl: false,
+  streetViewControl: false,
+  rotateControl: false,
+  fullscreenControl: false
+           
+        });
+
+       
+        var script = document.createElement('script');
+        script.src = '2.5_week.geojsonp';
+        document.getElementsByTagName('head')[0].appendChild(script);
+        map.data.setStyle(function(feature) {
+          var magnitude = feature.getProperty('mag');
+          return {
+            icon: getCircle(magnitude)
+          };
+        });
+      }
+
+      function getCircle(magnitude) {
+        return {
+          path: google.maps.SymbolPath.CIRCLE,
+          fillColor: 'red',
+          fillOpacity: .2,
+          scale: Math.pow(2, magnitude) / 2,
+          strokeColor: 'white',
+          strokeWeight: .5
+        };
+      }
+
+      function eqfeed_callback(results) {
+        map.data.addGeoJson(results);
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDS7BF2EAnf44NuVM97xewYK5qNbK1gF6s&callback=initMap">
+    </script>
 </head>
 
 <body>
      <div id="progress"></div>
-
+     {{#if error}}
+     <div class="alert alert-danger">{{error}}</div>
+     {{/if}}
      <div class="container-fluid">
           {{> _sidebar}}
           <div id="content">
-               {{> _header}}
-               <div class="content2">
-                    {{{body}}}
-               </div>
+             
+             
           </div>
           {{> _footer}}
      </div>
 
+
      <script type="text/javascript" src="/jquery.min.js"></script>
-     <script type="text/javascript"  src="/croppie/croppie.js"></script>
-     <script type="text/javascript" src="/js/popper.min.js"></script>
+   
+     <script type="text/javascript" src="/covid/js/popper.min.js"></script>
      <script type="text/javascript" src="/handlebars/dist/handlebars.js"></script>
-     <script type="text/javascript" src="/js/jquery.validate.js"></script>
-     <script type="text/javascript" src="/js/nprogress.js"></script>
-     <script type="text/javascript" src="/js/helpers.js"></script>
+ 
+     <script type="text/javascript" src="/covid/js/nprogress.js"></script>
+     <script type="text/javascript" src="/covid/js/helpers.js"></script>
      <script type="text/javascript" src="/bootstrap/dist/js/bootstrap.min.js"></script>
-     <script type="text/javascript" src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
-     <script type="text/javascript" src="/js/resources.js"></script>
+     <script type="text/javascript" src="/covid/js/jquery.mCustomScrollbar.concat.min.js"></script>
+     <script type="text/javascript" src="/covid/js/resources.js"></script>
 </body>
 </html>

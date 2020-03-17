@@ -1,8 +1,6 @@
 $(document).ready(function() {
     NProgress.done();
-    toastr.options = {
-        "closeButton": true,
-    }
+  
     $('input').on('focus',function(){
         $('input').removeClass('bordererror');
     });
@@ -49,3 +47,4 @@ $(document).ready(function() {
  
   
 });
+
