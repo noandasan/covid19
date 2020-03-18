@@ -7,6 +7,8 @@ $(document).ready(function () {
         $('#id').val('');
         $('#title').text('New Person');
         $('#Save').text('Save');
+        $('#person_id').prop('disabled', false);
+
         $('#dialog-newPerson').modal({
             keyboard: false
         });
@@ -17,17 +19,24 @@ $(document).ready(function () {
     });
 
     // form validate
-    $('#formLocation').validate({
+    $('#formPerson').validate({
         rules: {
-            location: {
-                required: true
-            },
-            latitude: {
+          person_id: {
               required: true
-           },
-           longitude: {
-             required: true
+          },
+          name: {
+            required: true
+          },
+          age: {
+            required: true
+          },
+          country_id: {
+            required: true
+          },
+          location_id: {
+            required: true
           }
+          
         },
         highlight: function (element) {
             $(element).addClass('has-error');
@@ -39,31 +48,32 @@ $(document).ready(function () {
   // end of form validate
 
   // form submit
-    $('#formLocation').submit(function (event) {
+    $('#formPerson').submit(function (event) {
         event.preventDefault();
 
         if (New == true) {
-                
             let data={
-                location: $('#location').val(),
-                latitude: $('#latitude').val(),
-                longitude: $('#longitude').val()
+              person_id: $('#person_id').val(),
+                name: $('#name').val(),
+                age: $('#age').val(),
+                location_id: $('#location_id').val(),
+                country_id: $('#country_id').val()
             }
-            if(!data.location || !data.latitude || !data.longitude){
+            if(!data.person_id || !data.name || !data.age || !data.location_id || !data.country_id){
                 return;
             }
 
-            $.post('/country/newlocation', data, function (response_json) {
+            $.post('/person/newperson', data, function (response_json) {
                 if (response_json.status == 1) {
                  let data1 = {
-                    searchfield: 'location',
+                    searchfield: '',
                     searchkey: '',
                     page: '1'
                   }
 
-                  loadrecords_post_final('/location/search', data1, 'locationstemplate','loadlocations');
-                  $('#dialog-newLocation').modal('toggle');
-                  toastr.success('<i class="fas fa-check-circle"></i> Location successfully saved!');
+                  loadrecords_post_final('/person/search', data1, 'personstemplate','loadPersons');
+                  $('#dialog-newPerson').modal('toggle');
+                  toastr.success('<i class="fas fa-check-circle"></i> Person successfully saved!');
                 } else {
                   toastr.error('<i class="fas fa-exclamation-triangle"></i> Already Exist!');
                 }
@@ -71,28 +81,28 @@ $(document).ready(function () {
         }else{
                   
            let data={
-            location: $('#location').val(),
-            latitude: $('#latitude').val(),
-            longitude: $('#longitude').val(),
-            location_id: id
+                person_id: $('#person_id').val(),
+                name: $('#name').val(),
+                age: $('#age').val(),
+                location_id: $('#location_id').val(),
+                country_id: $('#country_id').val()
            }
-          if(!data.location || !data.latitude || !data.longitude){
-              return;
+           if(!data.person_id || !data.name || !data.age || !data.location_id || !data.country_id){
+            return;
           }
          
-          $.post('/location/editlocation', data, function (response_json) {
+          $.post('/person/editperson', data, function (response_json) {
             if (response_json.status == 1) {
                 
              let data1 = {
-                searchfield: 'location',
+                searchfield: '',
                 searchkey: '',
                 page: '1'
               }
+              loadrecords_post_final('/person/search', data1, 'personstemplate','loadPersons');
 
-              loadrecords_post_final('/location/search', data1, 'locationstemplate','loadlocations');
-
-              $('#dialog-newLocation').modal('toggle');
-              toastr.success('<i class="fas fa-check-circle"></i> Location successfully Updated!');
+              $('#dialog-newPerson').modal('toggle');
+              toastr.success('<i class="fas fa-check-circle"></i> Person successfully Updated!');
             }
         });
         }
@@ -101,82 +111,85 @@ $(document).ready(function () {
 
 
     // Search 
-    $('#location-fields').on('click', 'a', function () {
+    $('#person-fields').on('click', 'a', function () {
         let data;
         var searchkey;
         var field = this.id;
-        $('#location-searchfield').text(this.id);
+        $('#person-searchfield').text(this.id);
         var searchfield = field.toLowerCase();
       
-          $('#location-searchkey').show();
-          searchkey = $('#location-searchkey').val();
+          $('#person-searchkey').show();
+          searchkey = $('#person-searchkey').val();
     
         data = {
           searchfield: searchfield,
           searchkey: searchkey,
           page: '1'
         }
-        $('#location-searchkey').focus();
-        loadrecords_post_final('/location/search', data, 'locationtemplate','loadlocations');
+        $('#person-searchkey').focus();
+        loadrecords_post_final('/person/search', data, 'personstemplate','loadPerson');
       });
     
-      $('#location-clear').click(function () {
-        $('#location-searchkey').val('');
-        $('#location-searchkey').focus();
+      $('#person-clear').click(function () {
+        $('#person-searchkey').val('');
+        $('#person-searchkey').focus();
       });
     
-      $('#location-refresh').click(function () {
-        $('#location-searchkey').val('');
+      $('#person-refresh').click(function () {
+        $('#person-searchkey').val('');
         data = {
           searchfield: '',
           searchkey: '',
           page: '1'
         }
         
-       // loadrecords_post('/country/search', data, 'countriestemplate');
-        loadrecords_post_final('/location/search', data, 'locationstemplate','loadlocations');
-        $('#location-searchkey').focus();
+        loadrecords_post_final('/person/search', data, 'personstemplate','loadPersons');
+        $('#person-searchkey').focus();
       });
       
-      $('#location-searchkey').keypress(function (e) {
+      $('#person-searchkey').keypress(function (e) {
         if (e.which == 13) {
-          $('#location-search').trigger('click');
+          $('#person-search').trigger('click');
         }
       });
 
-    $('#location-search').click(function(){
+    $('#person-search').click(function(){
         let data = {
-            searchfield: $('#location-searchfield').text(),
-            searchkey: $('#location-searchkey').val(),
+            searchfield: $('#person-searchfield').text(),
+            searchkey: $('#person-searchkey').val(),
             page: '1'
           }
-          $('#location-searchkey').focus();
-//          loadrecords_post('/country/search', data, 'countriestemplate');
-          loadrecords_post_final('/location/search', data, 'locationstemplate','loadlocations');
+          $('#person-searchkey').focus();
+          loadrecords_post_final('/person/search', data, 'personstemplate','loadPersons');
     });
-    $('body').on('click', '.editlocation', function () {
+
+    $('body').on('click', '.editperson', function () {
         New=false;
         id = this.id;
         
         let data = {
             id: id
         }
-        $.post('/location/edit', data, function (response_json, status) {
-            $('#location').val(response_json.locations[0].location);
-            $('#latitude').val(response_json.locations[0].latitude);
-            $('#longitude').val(response_json.locations[0].longitude);
+        $.post('/person/edit', data, function (response_json, status) {
+         
+            $('#person_id').val(response_json.person[0].person_id);
+            $('#name').val(response_json.person[0].name);
+            $('#age').val(response_json.person[0].age);
+            $('#country_id').selectpicker('val', response_json.person[0].country_id);
+            $('#location_id').selectpicker('val', response_json.person[0].location_id);
         });
 
-        $('#title').text('Edit Location');
+        $('#title').text('Edit Person');
         $('#Save').text('Save Changes');
+        $('#person_id').prop('disabled', true);
 
 
-        $('#dialog-newLocation').modal({
+        $('#dialog-newPerson').modal({
             keyboard: false
          });
         
-         $('#dialog-newLocation').on('shown.bs.modal', function() {
-            $('#location').focus();
+         $('#dialog-newPerson').on('shown.bs.modal', function() {
+            $('#persin_id').focus();
         })
 
 
@@ -184,18 +197,18 @@ $(document).ready(function () {
 
 
     //  click on pagination
-  $('#loadlocations').on('click', 'a', function () {
+  $('#loadPersons').on('click', 'a', function () {
     let data;
     var searchkey;
-    if ($('#locations-expandedsearch').attr('aria-expanded') === "true") {
-      var field = $('#location-searchfield').text();
+    if ($('#person-expandedsearch').attr('aria-expanded') === "true") {
+      var field = $('#person-searchfield').text();
       var searchfield = field.toLowerCase();
     
 
-        $('#location-searchkey').show();
-        $('#location-searchaction').show();
+        $('#person-searchkey').show();
+        $('#person-searchaction').show();
 
-        searchkey = $('#location-searchkey').val();
+        searchkey = $('#person-searchkey').val();
       
       data = {
         searchfield: searchfield,
@@ -210,7 +223,7 @@ $(document).ready(function () {
       }
     }
 
-    loadrecords_post_final('/location/search', data, 'locationstemplate','loadlocations');
+    loadrecords_post_final('/person/search', data, 'personstemplate','loadPersons');
   });
   // end of click pagination
 

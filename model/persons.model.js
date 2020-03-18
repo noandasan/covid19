@@ -1,6 +1,6 @@
 module.exports = function(sequelize, DataTypes){
 	const Locations = sequelize.define('tblpersons', {
-		id: {
+		person_id: {
 			type: DataTypes.INTEGER,
 			primaryKey: true
 		},
@@ -15,6 +15,9 @@ module.exports = function(sequelize, DataTypes){
 		},
 		status: {
 			type: DataTypes.STRING
+		},
+		age: {
+			type: DataTypes.INTEGER,
 		},
 		created: {
 			type: DataTypes.DATE,

@@ -182,19 +182,33 @@ router.post('/location/edit', (req, res) => {
  //submit edit country
  router.post('/location/editlocation', (req, res) => {
     try {
-       _locations.update({
-        location: req.body.location,
-        latitude: req.body.latitude,
-        latitude: req.body.latitude
-       },
-       {
-           where:{
-            location_id: req.body.location_id
-           }
-       })
-       .then(result=>{
-             res.send({ status: 1 });
-       });
+        _locations.findOne({
+            where: { location: req.body.location }
+        })
+        .then(count=>{
+            if (!count) {
+                _locations.update({
+                    location: req.body.location,
+                    latitude: req.body.latitude,
+                    latitude: req.body.latitude
+                   },
+                   {
+                       where:{
+                        location_id: req.body.location_id
+                       }
+                   })
+                   .then(result=>{
+                         res.send({ status: 1 });
+                   });
+            } else {
+                    res.send({ status: 2 });
+            }
+        });
+
+
+
+
+     
     }
     catch (err) {
         return next(err);

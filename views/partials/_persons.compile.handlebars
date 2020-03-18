@@ -1,0 +1,93 @@
+ <table class="table table-hover table-sm table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Age</th>
+                <th scope="col">Location</th>
+                 <th scope="col">Nationality</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            \{{#each Persons}}
+            <tr>
+                <td width="10%">\{{person_id}}</td>
+                <td width="30%">\{{name}}</td>
+                <td width="10%">\{{age}}</td>
+                <td width="20%">\{{location}}</td>
+                <td width="25%">\{{country}}</td>
+                <td width="5%">
+                    <ul>
+                        <li>
+                            <span class="float-right" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                <i id="\{{person_id}}" class="fas fa-edit editperson"></i>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="float-right" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                                <i id="\{{person_id}}" class="fas fa-trash-alt"></i>
+                            </span>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+            \{{else}}
+            <table class="table table-hover table-sm table-striped notfoundrecords">
+                <tr>
+                    <td width="100%">No Location found</td>
+                </tr>
+             </table>  
+            \{{/each}}
+        </tbody>
+    </table>
+\{{#ifCond pagination.totalrecord '>'0}}
+<nav class="footerrecord" aria-label="...">
+        <span style="float: left;"> Record: \{{pagination.off}} to \{{pagination.bong}} of \{{pagination.totalrecord}}, Page: \{{pagination.page}} of \{{pagination.pageCount}} </span>
+        <ul class="pagination pagination-sm justify-content-end">
+            \{{#paginate pagination type="first"}}
+            <li \{{#if disabled}} class="page-item disabled" \{{else}} class="page-item" \{{/if}}>
+                <a class="page-link" id="\{{n}}" href="javascript:void(0);" aria-label="First">
+                    <span aria-hidden="true"><i class="fas fa-angle-double-left"></i></span>
+                </a>
+            </li>
+            \{{/paginate}}
+
+            \{{#paginate pagination type="previous"}}
+            <li \{{#if disabled}} class="page-item disabled" \{{else}} class="page-item" \{{/if}}>
+                <a class="page-link" id="\{{n}}" href="javascript:void(0);" aria-label="Previous">
+                    <span aria-hidden="true"><i class="fas fa-angle-left"></i></span>
+                </a>
+            </li>
+            \{{/paginate}}
+            \{{#paginate pagination type="middle" limit="5"}}
+            \{{#if active}}
+            <li class="page-item active" aria-current="page">
+                <span class="page-link">
+                    \{{n}}
+                    <span class="sr-only">(current)</span>
+                </span>
+            </li>
+            \{{else}}
+
+            <li class="page-item"><a class="page-link" id="\{{n}}" href="javascript:void(0);">\{{n}}</a></li>
+            \{{/if}}
+            \{{/paginate}}
+
+            \{{#paginate pagination type="next"}}
+            <li \{{#if disabled}} class="page-item disabled" \{{else}} class="page-item" \{{/if}}>
+                <a class="page-link" id="\{{n}}" href="javascript:void(0);" aria-label="Next">
+                    <span aria-hidden="true"><i class="fas fa-angle-right"></i></span>
+                </a>
+            </li>
+            \{{/paginate}}
+            \{{#paginate pagination type="last"}}
+            <li \{{#if disabled}} class="page-item disabled" \{{else}} class="page-item" \{{/if}}>
+                <a class="page-link" id="\{{n}}" href="javascript:void(0);" aria-label="Last">
+                    <span aria-hidden="true"><i class="fas fa-angle-double-right"></i></span>
+                </a>
+            </li>
+            \{{/paginate}}
+        </ul>
+    </nav>
+  \{{/ifCond}}

@@ -22,9 +22,11 @@
                 <button class="btn btn-success dropdown-toggle" id="person-searchfield" type="button"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Id</button>
                 <div id="person-fields" class="dropdown-menu">
-                    <a class="dropdown-item" id="Location" href="javascript:void(0);">Id</a>
-                    <a class="dropdown-item" id="Location" href="javascript:void(0);">Name</a>
-                    <a class="dropdown-item" id="Location" href="javascript:void(0);">Location</a>
+                    <a class="dropdown-item" id="Id" href="javascript:void(0);">Id</a>
+                    <a class="dropdown-item" id="Name" href="javascript:void(0);">Name</a>
+                    <a class="dropdown-item" id="Age" href="javascript:void(0);">Age</a>
+                     <a class="dropdown-item" id="Location" href="javascript:void(0);">Location</a>
+                        <a class="dropdown-item" id="Nationality" href="javascript:void(0);">Nationality</a>
                 </div>
             </div>
             <input type="text" id="person-searchkey" class="form-control border-success searchkey" aria-label="">
@@ -46,28 +48,32 @@
     <table class="table table-hover table-sm table-striped">
         <thead>
             <tr>
-                <th scope="col">Id</th>
+               <th scope="col">Id</th>
                 <th scope="col">Name</th>
+                <th scope="col">Age</th>
                 <th scope="col">Location</th>
+                 <th scope="col">Nationality</th>
                 <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
             {{#each Persons}}
             <tr>
-                <td width="10%">{{id}}</td>
-                <td width="50%">{{name}}</td>
-                <td width="350%">{{location}}</td>
+                <td width="10%">{{person_id}}</td>
+                <td width="30%">{{name}}</td>
+                <td width="10%">{{age}}</td>
+                <td width="20%">{{location}}</td>
+                <td width="25%">{{country}}</td>
                 <td width="5%">
                     <ul>
                         <li>
                             <span class="float-right" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                                <i id="{{id}}" class="fas fa-edit editperson"></i>
+                                <i id="{{person_id}}" class="fas fa-edit editperson"></i>
                             </span>
                         </li>
                         <li>
                             <span class="float-right" data-toggle="tooltip" data-placement="bottom" title="Delete">
-                                <i id="{{id}}" class="fas fa-trash-alt"></i>
+                                <i id="{{person_id}}" class="fas fa-trash-alt"></i>
                             </span>
                         </li>
                     </ul>
@@ -136,10 +142,10 @@
 </div>
 
 
-{{!-- New Country --}}
+{{!-- New Person --}}
 <div class="modal fade" id="dialog-newPerson" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
     <form method="POST" id="formPerson">
-        <div class="modal-dialog modal-md" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header btn-modal-head">
                     <h5 class="modal-title" id="title">New Person</h5>
@@ -153,32 +159,66 @@
                             <div class="col-sm-12">
                                 
                                 <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label col-form-label-sm">Id</label>
-                                    <div class="col-sm-10">
-                                        <input autofocus type="text" autocomplete="off" required="required" id="id"
-                                            name="id" value="" class="form-control form-control-sm"
-                                            placeholder="id">
+                                    <label class="col-sm-1 col-form-label col-form-label-sm">Id</label>
+                                    <div class="col-sm-3">
+                                        <input autofocus type="text" autocomplete="off" required="required" id="person_id"
+                                            name="person_id" value="" class="form-control form-control-sm"
+                                            placeholder="NationalID/Iqama">
                                     </div>
-                                </div>
-
-                                 <div class="form-group row">
-                                    
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label col-form-label-sm">Latitude</label>
-                                    <div class="col-sm-4">
-                                        <input autofocus type="text" autocomplete="off" required="required" id="latitude"
-                                            name="latitude" value="" class="form-control form-control-sm"
-                                            placeholder="Latitude">
+                                    <label class="col-sm-1 col-form-label col-form-label-sm">Name</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" autocomplete="off" required="required" id="name"
+                                            name="name" value="" class="form-control form-control-sm"
+                                            placeholder="Name">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-1 col-form-label col-form-label-sm">Age</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" autocomplete="off" required="required" id="age"
+                                            name="age" value="" class="form-control form-control-sm"
+                                            placeholder="">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    
+
+                                    <label class="col-sm-1 col-form-label col-form-label-sm">Nationality</label>
+                                    <div class="col-sm-4 selectdis">
+                                        <div class="errorplacement"><select id='country_id' class="selectpicker myselect"
+                                                required="required" data-live-search="true">
+                                                <option value=''>Select Nationality</option>
+                                                {{#each country}}
+                                                <option value={{country_id}}>{{country}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
                                     </div>
 
-                                    <label class="col-sm-2 col-form-label col-form-label-sm">Longitude</label>
-                                    <div class="col-sm-4">
-                                        <input autofocus type="text" autocomplete="off" required="required" id="longitude"
-                                            name="longitude" value="" class="form-control form-control-sm"
-                                            placeholder="Longitude">
+                                </div>
+
+
+<div class="form-group row">
+                                    <label class="col-sm-1 col-form-label col-form-label-sm">Location</label>
+                                    <div class="col-sm-4 selectdis">
+                                        <div class="errorplacement"><select id='location_id' class="selectpicker myselect"
+                                                required="required" data-live-search="true">
+                                                <option value=''>Select Location</option>
+                                                {{#each location}}
+                                                <option value={{location_id}}>{{location}}</option>
+                                                {{/each}}
+                                            </select>
+                                            <label id="location_id-error" class="error" for="location_id" style="">This field is required.</label>
+                                        </div>
                                     </div>
+
+                                   
+
                                 </div>
 
                             </div>

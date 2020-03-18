@@ -8,78 +8,123 @@ const Op = Sequelize.Op;
 const _roleassigments = db.Roleassigments;
 const _modules = db.Modules;
 const _persons = db.Persons;
+const _locations = db.Locations;
+const _countries = db.Countries;
 
-router.get('/master/persons', ensureAuthenticated,myrole, (req, res) => {
+router.get('/master/persons', ensureAuthenticated, myrole, (req, res) => {
     const systemroles = Menu(req.user.role_id, _roleassigments, _modules);
-    _persons.count()
-        .then(cnt=>{
-            let page = req.params.page || 1;
-            page = parseInt(page);
-            const limit = 20;
-            const a = limit * page;
-            const offset = (page - 1) * limit;
-            const x = page * limit;
-            let y; let z; let b;
-            if (x > cnt) {
-                y = x - cnt;
-                z = 20 - y;
-                b = z + offset;
-            } else {
-                b = page * limit;
-            }
-            const totalpage = Math.ceil(cnt / limit);
-            _persons.findAll({
+
+    _persons.hasMany(_locations,{ sourceKey: 'location_id', foreignKey: 'location_id' });
+    _persons.hasMany(_countries,{ sourceKey: 'country_id', foreignKey: 'country_id' });
+
+
+    _locations.findAll({
+        attributes: [
+            ['location_id', 'location_id'],
+            ['location', 'location'],
+        ],
+        order: [
+            ['location', 'ASC']
+        ]
+    })
+        .then(location => {
+            _countries.findAll({
                 attributes: [
-                    ['id', 'id'],
-                    ['name', 'name']
+                    ['country_id', 'country_id'],
+                    ['country', 'country'],
                 ],
                 order: [
-                    ['id', 'DESC']
-                ],
-                limit: limit,
-                offset: offset,
+                    ['country', 'ASC']
+                ]
             })
-            .then(result=>{
-                    let records = [];
-                        for (i = 0; i < result.length; i++) {
-                            records.push({
-                                row_number: (offset + 1) + i,
-                                id: result[i].id,
-                                name: result[i].name
-                            });
-                        }
+                .then(country => {
+                    _persons.count()
+                        .then(cnt => {
+                            let page = req.params.page || 1;
+                            page = parseInt(page);
+                            const limit = 20;
+                            const a = limit * page;
+                            const offset = (page - 1) * limit;
+                            const x = page * limit;
+                            let y; let z; let b;
+                            if (x > cnt) {
+                                y = x - cnt;
+                                z = 20 - y;
+                                b = z + offset;
+                            } else {
+                                b = page * limit;
+                            }
+                            const totalpage = Math.ceil(cnt / limit);
+                            _persons.findAll({
+                                include: [{
+                                    model: _locations,
+                                    required: true,
+                                    attributes: [
+                                        ['location', 'location']
+                                    ]
+                                },{
+                                    model: _countries,
+                                    required: true,
+                                    attributes: [
+                                        ['country', 'country']
+                                    ]
+                                }],
+                                order: [
+                                    ['created', 'DESC']
+                                ],
+                                limit: limit,
+                                offset: offset,
+                            })
+                                .then(result => {
+                                    let records = [];
+                                    for (i = 0; i < result.length; i++) {
+                                        records.push({
+                                            person_id: result[i].person_id,
+                                            name: result[i].name,
+                                            age: result[i].age,
+                                            country: result[i].tblcountries[0].country,
+                                            location: result[i].tbllocations[0].location
+                                        });
+                                    }
 
-                res.render("master/persons", {
-                    systemroles: systemroles,
-                    title: 'Person',
-                    Persons: records,
-                    pagination: { page: page, pageCount: totalpage, totalrecord: cnt, off: offset + 1, bong: b }
-                })
-            });
+                                    res.render("master/persons", {
+                                        systemroles: systemroles,
+                                        title: 'Persons',
+                                        Persons: records,
+                                        location: location,
+                                        country: country,
+                                        pagination: { page: page, pageCount: totalpage, totalrecord: cnt, off: offset + 1, bong: b }
+                                    })
+                                });
+                        });
+                });
         });
-    });
- 
-   //submit new country
-    router.post('/country/newlocation', (req, res) => {
+});
+
+
+//submit new country
+router.post('/person/newperson', (req, res) => {
     let data = {
-        location: req.body.location,
-        latitude: req.body.latitude,
-        longitude: req.body.longitude
+        person_id: req.body.person_id,
+        name: req.body.name,
+        age: req.body.age,
+        location_id: req.body.location_id,
+        country_id: req.body.country_id
     }
     try {
-        _locations.findOne({
-            where: { location: data.location }
+        _persons.findOne({
+            where: { person_id: data.person_id }
         })
-        .then(count=>{
-            if (!count) {
-                _locations.create(data)
-                .then(result=>{
-                    res.send({ status: 1 });
-                });
-            } else {
+            .then(count => {
+                if (!count) {
+                    _persons.create(data)
+                        .then(result => {
+                            res.send({ status: 1 });
+                        });
+                } else {
                     res.send({ status: 2 });
-            }
-        });
+                }
+            });
     }
     catch (err) {
         return next(err);
@@ -87,31 +132,48 @@ router.get('/master/persons', ensureAuthenticated,myrole, (req, res) => {
 });
 
 //start of search
-router.post('/location/search', (req, res) => {
-   
-    const locationData = {
+router.post('/person/search', (req, res) => {
+    _persons.hasMany(_locations,{ sourceKey: 'location_id', foreignKey: 'location_id' });
+    _persons.hasMany(_countries,{ sourceKey: 'country_id', foreignKey: 'country_id' });
+
+    const personData = {
         searchkey: req.body.searchkey,
         searchfield: req.body.searchfield,
         page: req.body.page
     }
 
-    var field = locationData.searchfield;
+    var field = personData.searchfield;
     var field = field.toLowerCase();
     var whereStatement = {};
+    var whereStatement1 = {};
+    var whereStatement2 = {};
 
-    if (field === "location") {
-        whereStatement.location = { [Op.like]: '%' + locationData.searchkey + '%' };
+    if (field === "id") {
+        whereStatement.person_id = { [Op.like]: '%' + personData.searchkey + '%' };
     }
+    if (field === "name") {
+        whereStatement.name = { [Op.like]: '%' + personData.searchkey + '%' };
+    }
+    if (field === "age") {
+        whereStatement.age = { [Op.like]: '%' + personData.searchkey + '%' };
+    }
+    if (field === "nationality") {
+        whereStatement2.country = { [Op.like]: '%' + personData.searchkey + '%' };
+    }
+    if (field === "location") {
+        whereStatement1.location = { [Op.like]: '%' + personData.searchkey + '%' };
+    }
+
 
     if (field === "") {
-        whereStatement.location = { [Op.like]: '%%' };
+        whereStatement.person_id = { [Op.like]: '%%' };
     }
     try {
-        _locations.count({
+        _persons.count({
             where: whereStatement
         })
             .then(cnt => {
-                let page = locationData.page || 1;
+                let page = personData.page || 1;
                 page = parseInt(page);
                 const limit = 20;
                 const offset = (page - 1) * limit;
@@ -125,30 +187,41 @@ router.post('/location/search', (req, res) => {
                     b = page * limit;
                 }
                 const totalpage = Math.ceil(cnt / limit);
-                _locations.findAll({
-                    attributes: [
-                        ['location_id', 'location_id'],
-                        ['location', 'location'],
-                    ],
+                _persons.findAll({
+                    include: [{
+                        model: _locations,
+                        required: true,
+                        attributes: [
+                            ['location', 'location']
+                        ],
+                        where: whereStatement1
+                    },{
+                        model: _countries,
+                        required: true,
+                        attributes: [
+                            ['country', 'country']
+                        ],
+                        where: whereStatement2
+                    }],
                     order: [
-                        ['location_id', 'DESC']
+                        ['created', 'DESC']
                     ],
                     where: whereStatement,
                     limit: limit,
                     offset: offset
-                }).then(location => {
+                }).then(result => {
                     let records = [];
-                    for (i = 0; i < location.length; i++) {
+                    for (i = 0; i < result.length; i++) {
                         records.push({
-                            row_number: (offset + 1) + i,
-                            location_id: location[i].location_id,
-                            location: location[i].location,
-                            latitude: location[i].latitude,
-                            latitude: location[i].latitude
+                            person_id: result[i].person_id,
+                            name: result[i].name,
+                            age: result[i].age,
+                            country: result[i].tblcountries[0].country,
+                            location: result[i].tbllocations[0].location
                         });
                     }
                     res.send({
-                        location: records,
+                        Persons: records,
                         pagination: { page: page, pageCount: totalpage, totalrecord: cnt, off: offset + 1, bong: b }
                     })
                 });
@@ -158,43 +231,53 @@ router.post('/location/search', (req, res) => {
     }
 });
 
-router.post('/location/edit', (req, res) => {
-    _locations.findAll({
-        attributes: [
-            ['location_id', 'location_id'],
-            ['location', 'location'],
-            ['latitude', 'latitude'],
-            ['longitude', 'longitude'],
-          
-        ],
+router.post('/person/edit', (req, res) => {
+    _persons.hasMany(_locations,{ sourceKey: 'location_id', foreignKey: 'location_id' });
+    _persons.hasMany(_countries,{ sourceKey: 'country_id', foreignKey: 'country_id' });
+
+    _persons.findAll({
+        include: [{
+            model: _locations,
+            required: true,
+            attributes: [
+                ['location', 'location']
+            ]
+        },{
+            model: _countries,
+            required: true,
+            attributes: [
+                ['country', 'country']
+            ]
+        }],
         where: {
-            location_id: req.body.id
+            person_id: req.body.id
         },
 
     })
         .then(result => {
-            res.send({ locations: result });
+            res.send({ person: result });
 
         });
 });
 
 
- //submit edit country
- router.post('/location/editlocation', (req, res) => {
+//submit edit country
+router.post('/person/editperson', (req, res) => {
     try {
-       _locations.update({
-        location: req.body.location,
-        latitude: req.body.latitude,
-        latitude: req.body.latitude
-       },
-       {
-           where:{
-            location_id: req.body.location_id
-           }
-       })
-       .then(result=>{
-             res.send({ status: 1 });
-       });
+        _persons.update({
+            name: req.body.name,
+            age: req.body.age,
+            location_id: req.body.location_id,
+            country_id: req.body.country_id
+        },
+            {
+                where: {
+                    person_id: req.body.person_id
+                }
+            })
+            .then(result => {
+                res.send({ status: 1 });
+            });
     }
     catch (err) {
         return next(err);

@@ -94,6 +94,9 @@ $(document).ready(function () {
               $('#dialog-newLocation').modal('toggle');
               toastr.success('<i class="fas fa-check-circle"></i> Location successfully Updated!');
             }
+            else {
+              toastr.error('<i class="fas fa-exclamation-triangle"></i> Already Exist!');
+            }
         });
         }
 
@@ -117,7 +120,7 @@ $(document).ready(function () {
           page: '1'
         }
         $('#location-searchkey').focus();
-        loadrecords_post_final('/location/search', data, 'locationtemplate','loadlocations');
+        loadrecords_post_final('/location/search', data, 'locationstemplate','loadlocations');
       });
     
       $('#location-clear').click(function () {

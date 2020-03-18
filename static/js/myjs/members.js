@@ -20,8 +20,7 @@ $(document).ready(function () {
     $('.pass').show();
     $('#Save').text('Save');
     var mymodal = $('#dialog-newMember');
-    $.get("/admin/roles/loadmodules", function (response_json, status) {
-    });
+   
     $('#dialog-newMember').modal({
       keyboard: false
     });
