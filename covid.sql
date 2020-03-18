@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 17, 2020 at 03:33 PM
+-- Generation Time: Mar 18, 2020 at 03:15 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.3
 
@@ -171,7 +171,23 @@ INSERT INTO `tblmodules` (`module_id`, `modulename`, `path`, `parent`, `icon`, `
 (5, 'Roles', '/admin/roles', 1, 'fas fa-user-tag', 0, 0, '2020-01-15 00:00:00'),
 (7, 'Dashboard', '/dashboard', 0, 'fas fa-columns', 1, 0, '0000-00-00 00:00:00'),
 (8, 'Profile', '/profile', 1000, '', 1000, 0, '2020-01-10 00:00:00'),
-(9, 'Locations', '/master/locations', 2, 'fas fa-map-marker-alt', 2, 0, '2020-01-15 00:00:00');
+(9, 'Locations', '/master/locations', 2, 'fas fa-map-marker-alt', 2, 0, '2020-01-15 00:00:00'),
+(10, 'Persons', '/master/persons', 2, 'fas fa-map-marker-alt', 3, 0, '2020-01-15 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tblpersons`
+--
+
+CREATE TABLE `tblpersons` (
+  `id` varchar(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `location_id` int(11) NOT NULL,
+  `country_id` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  `created` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -198,7 +214,8 @@ INSERT INTO `tblroleassignments` (`id`, `role_id`, `module_id`, `created`) VALUE
 (6, 1, 5, '2020-01-01 00:00:00'),
 (7, 1, 7, '2020-01-07 00:00:00'),
 (8, 1, 8, '2020-01-10 00:00:00'),
-(18, 1, 9, '2020-01-01 00:00:00');
+(18, 1, 9, '2020-01-01 00:00:00'),
+(19, 1, 10, '2020-01-01 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -292,6 +309,15 @@ ALTER TABLE `tblmodules`
   ADD KEY `id` (`module_id`);
 
 --
+-- Indexes for table `tblpersons`
+--
+ALTER TABLE `tblpersons`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `infected_id` (`id`),
+  ADD KEY `location_id` (`location_id`),
+  ADD KEY `country_id` (`country_id`);
+
+--
 -- Indexes for table `tblroleassignments`
 --
 ALTER TABLE `tblroleassignments`
@@ -347,13 +373,13 @@ ALTER TABLE `tbllocations`
 -- AUTO_INCREMENT for table `tblmodules`
 --
 ALTER TABLE `tblmodules`
-  MODIFY `module_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `module_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tblroleassignments`
 --
 ALTER TABLE `tblroleassignments`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `tblroles`

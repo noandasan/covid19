@@ -49,7 +49,7 @@ router.get('/master/persons', ensureAuthenticated,myrole, (req, res) => {
                             });
                         }
 
-                res.render("master/locations", {
+                res.render("master/persons", {
                     systemroles: systemroles,
                     title: 'Person',
                     Persons: records,

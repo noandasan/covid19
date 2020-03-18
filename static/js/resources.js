@@ -13,4 +13,5 @@ includeJs("/js/myjs/roles.js");
 includeJs("/js/myjs/members.js");
 includeJs("/js/myjs/countries.js");
 includeJs("/js/myjs/locations.js");
+includeJs("/js/myjs/persons.js");
 includeJs("/js/myjs/functions.js");

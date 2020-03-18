@@ -1,17 +1,17 @@
 <div class="mt-5">
     <div class="row topcont">
         <div class="col-6">
-            <h4 class="px-2 mb-1">Locations</h4>
+            <h4 class="px-2 mb-1">Persons</h4>
         </div>
         <div class="col-6 text-right px-2">
-            <button type="button" id="locations-expandedsearch" class="btn btn-light-mod text-light" data-toggle="collapse"
+            <button type="button" id="persons-expandedsearch" class="btn btn-light-mod text-light" data-toggle="collapse"
                 data-target="#collapsesearch" aria-expanded="false" aria-controls="collapsesearch">
                 <i class="fas fa-arrows-alt-v"></i>
             </button>
-            <button type="button" data-backdrop="static" data-keyboard="false" id="btn-NewLocation"
+            <button type="button" data-backdrop="static" data-keyboard="false" id="btn-NewPerson"
                 class="btn btn-success-mod px-3 text-light">
                 <i class="fa fa-plus"></i>
-                New Location
+                New Person
             </button>
 
         </div>
@@ -19,20 +19,22 @@
     <div class="searchhidden collapse" id="collapsesearch">
         <div class="input-group input-group-sm m-2">
             <div class="input-group-prepend">
-                <button class="btn btn-success dropdown-toggle" id="location-searchfield" type="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Location</button>
-                <div id="country-fields" class="dropdown-menu">
+                <button class="btn btn-success dropdown-toggle" id="person-searchfield" type="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Id</button>
+                <div id="person-fields" class="dropdown-menu">
+                    <a class="dropdown-item" id="Location" href="javascript:void(0);">Id</a>
+                    <a class="dropdown-item" id="Location" href="javascript:void(0);">Name</a>
                     <a class="dropdown-item" id="Location" href="javascript:void(0);">Location</a>
                 </div>
             </div>
-            <input type="text" id="location-searchkey" class="form-control border-success searchkey" aria-label="">
+            <input type="text" id="person-searchkey" class="form-control border-success searchkey" aria-label="">
 
-            <div id="location-searchaction" class="btn-group btn-group-sm ml-1" role="group" aria-label="">
-                <button type="button" id="location-search" class="btn btn-success" data-toggle="tooltip"
+            <div id="person-searchaction" class="btn-group btn-group-sm ml-1" role="group" aria-label="">
+                <button type="button" id="person-search" class="btn btn-success" data-toggle="tooltip"
                     data-placement="bottom" title="search"><i class="fas fa-search"></i></button>
-                <button type="button" id="location-clear" class="btn btn-success" data-toggle="tooltip"
+                <button type="button" id="person-clear" class="btn btn-success" data-toggle="tooltip"
                     data-placement="bottom" title="clear"><i class="fas fa-eraser"></i></button>
-                <button type="button" id="location-refresh" class="btn btn-success" data-toggle="tooltip"
+                <button type="button" id="person-refresh" class="btn btn-success" data-toggle="tooltip"
                     data-placement="bottom" title="refresh"><i class="fas fa-sync"></i></button>
             </div>
         </div>
@@ -40,30 +42,32 @@
 </div>
 
 
-<div id="loadlocations" class="shadow-sm p-2 bg-white">
+<div id="loadPersons" class="shadow-sm p-2 bg-white">
     <table class="table table-hover table-sm table-striped">
         <thead>
             <tr>
-                <th scope="col">Item</th>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
                 <th scope="col">Location</th>
                 <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
-            {{#each location}}
+            {{#each Persons}}
             <tr>
-                <td width="10%">{{row_number}}</td>
-                <td width="85%">{{location}}</td>
+                <td width="10%">{{id}}</td>
+                <td width="50%">{{name}}</td>
+                <td width="350%">{{location}}</td>
                 <td width="5%">
                     <ul>
                         <li>
                             <span class="float-right" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                                <i id="{{location_id}}" class="fas fa-edit editlocation"></i>
+                                <i id="{{id}}" class="fas fa-edit editperson"></i>
                             </span>
                         </li>
                         <li>
                             <span class="float-right" data-toggle="tooltip" data-placement="bottom" title="Delete">
-                                <i id="{{location_id}}" class="fas fa-trash-alt"></i>
+                                <i id="{{id}}" class="fas fa-trash-alt"></i>
                             </span>
                         </li>
                     </ul>
@@ -72,7 +76,7 @@
             {{else}}
             <table class="table table-hover table-sm table-striped notfoundrecords">
                 <tr>
-                    <td width="100%">No Location Found</td>
+                    <td width="100%">No Person Found</td>
                 </tr>
             </table>
             {{/each}}
@@ -133,12 +137,12 @@
 
 
 {{!-- New Country --}}
-<div class="modal fade" id="dialog-newLocation" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
-    <form method="POST" id="formLocation">
+<div class="modal fade" id="dialog-newPerson" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
+    <form method="POST" id="formPerson">
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header btn-modal-head">
-                    <h5 class="modal-title" id="title">New Location</h5>
+                    <h5 class="modal-title" id="title">New Person</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -149,11 +153,11 @@
                             <div class="col-sm-12">
                                 
                                 <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label col-form-label-sm">Location</label>
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">Id</label>
                                     <div class="col-sm-10">
-                                        <input autofocus type="text" autocomplete="off" required="required" id="location"
-                                            name="location" value="" class="form-control form-control-sm"
-                                            placeholder="Location">
+                                        <input autofocus type="text" autocomplete="off" required="required" id="id"
+                                            name="id" value="" class="form-control form-control-sm"
+                                            placeholder="id">
                                     </div>
                                 </div>
 

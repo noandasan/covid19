@@ -38,8 +38,9 @@ const users = require('./routes/userslogin.route');
 const roles = require('./routes/roles.route');
 const members = require('./routes/members.route');
 const countries = require('./routes/countries.route');
-
 const locations = require('./routes/locations.route');
+
+const persons = require('./routes/persons.route');
 
 // Express session midleware
 app.use(session({
@@ -75,6 +76,7 @@ app.use('/', roles);
 app.use('/', members);
 app.use('/', countries);
 app.use('/', locations);
+app.use('/', persons);
 
 app.use(function(req, res, next){
   res.status(404).render('index/404', {layout: false, error:" Page not found", title: "Sorry, page not found"});
