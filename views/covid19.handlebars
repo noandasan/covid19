@@ -33,12 +33,11 @@
   streetViewControl: false,
   rotateControl: false,
   fullscreenControl: false
-           
-        });
-
-       
+});
+      
         var script = document.createElement('script');
         script.src = '2.5_week.geojsonp';
+
         document.getElementsByTagName('head')[0].appendChild(script);
         map.data.setStyle(function(feature) {
           var magnitude = feature.getProperty('mag');
@@ -53,7 +52,7 @@
           path: google.maps.SymbolPath.CIRCLE,
           fillColor: 'red',
           fillOpacity: .2,
-          scale: Math.pow(2, magnitude) / 2,
+          scale: magnitude*2,
           strokeColor: 'white',
           strokeWeight: .5
         };

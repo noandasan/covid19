@@ -24,5 +24,6 @@ db.Controlassigments = require('../model/controlassigments.model.js')(sequelize,
 db.Controls = require('../model/controls.model.js')(sequelize, Sequelize);
 db.Countries = require('../model/countries.model.js')(sequelize, Sequelize);
 db.Locations = require('../model/locations.model.js')(sequelize, Sequelize);
+db.Persons = require('../model/persons.model.js')(sequelize, Sequelize);
 
 module.exports = db;
