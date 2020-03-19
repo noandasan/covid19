@@ -1186,7 +1186,7 @@
 
 .mCS-minimal.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
     background-color: #fff;
-    background-color: rgba(0, 123, 255, 1);
+    background-color: rgba(27, 185, 51, 1);
     filter: "alpha(opacity=20)";
     -ms-filter: "alpha(opacity=20)"
 }
@@ -1194,7 +1194,7 @@
 .mCS-minimal.mCSB_scrollTools .mCSB_dragger.mCSB_dragger_onDrag .mCSB_dragger_bar,
 .mCS-minimal.mCSB_scrollTools .mCSB_dragger:active .mCSB_dragger_bar {
     background-color: #fff;
-    background-color: rgba(0, 123, 255, 1);
+    background-color: rgba(27, 185, 51, 1);
     filter: "alpha(opacity=50)";
     -ms-filter: "alpha(opacity=50)"
 }

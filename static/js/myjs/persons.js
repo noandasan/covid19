@@ -2,6 +2,16 @@ $(document).ready(function () {
     
     var New=true;
     
+    $('.country_id').click(function(){
+     
+      $('#message_country_id').hide();
+    });
+    $('.location_id').click(function(){
+      $('#message_location_id').hide();
+    });
+
+
+
     $('#btn-NewPerson').click(function(){
         New=true;
         $('#id').val('');
@@ -29,14 +39,7 @@ $(document).ready(function () {
           },
           age: {
             required: true
-          },
-          country_id: {
-            required: true
-          },
-          location_id: {
-            required: true
           }
-          
         },
         highlight: function (element) {
             $(element).addClass('has-error');
@@ -59,7 +62,17 @@ $(document).ready(function () {
                 location_id: $('#location_id').val(),
                 country_id: $('#country_id').val()
             }
-            if(!data.person_id || !data.name || !data.age || !data.location_id || !data.country_id){
+
+            if(!data.country_id){
+              $('#message_country_id').show();
+               return;
+            }
+            if(!data.location_id){
+              $('#message_location_id').show();
+               return;
+            }
+
+            if(!data.person_id || !data.name || !data.age){
                 return;
             }
 

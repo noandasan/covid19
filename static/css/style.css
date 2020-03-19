@@ -589,3 +589,9 @@
 .modal-picture-edit{
     padding: 0px;
 }
+
+.error-on-select{
+    display: none;
+    font-size: 12px;
+    color: #f93631;
+}

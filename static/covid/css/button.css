@@ -47,7 +47,7 @@
 }
 
 .btn-modal-head {
-    background-color: #3b4c6c;
+   
     color: white;
     font-size: 14px;
 }
@@ -80,3 +80,27 @@
     padding: 0px 3px; 
     font-size: 13px;
 }
+
+.badge-red{
+  color: #f83f06;
+}
+.badge-yellow{
+    color: #ffa10d;
+    
+}
+.badge-green{
+   color: #0da825;
+    
+}
+.badge-red-bg{
+    background-color: #f83f06;
+    color: white;
+  }
+  .badge-yellow-bg{
+    background-color: #ffa10d;
+    color: white;  
+  }
+  .badge-green-bg{
+    background-color: #0da825;
+    color: white;
+  }

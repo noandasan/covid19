@@ -8,16 +8,89 @@ const _roleassigments = db.Roleassigments;
 const _modules = db.Modules;
 const _roles = db.Roles;
 const _users = db.Users;
+const _persons = db.Persons;
+const _countries = db.Countries;
+const _locations = db.Locations;
+
+
 
 router.get('/', (req, res) => {
-   // const systemroles = Menu(req.user.role_id, _roleassigments, _modules);
-    res.render("covid19", {layout: false})
+    _persons.hasMany(_locations,{ sourceKey: 'location_id', foreignKey: 'location_id' });
+    _persons.hasMany(_countries,{ sourceKey: 'country_id', foreignKey: 'country_id' });
+
+    _persons.findAll({
+        include: [{
+            model: _countries,
+            required: true,
+            attributes: [
+                'country',
+                [Sequelize.fn('count', Sequelize.col('country')), 'cnt']
+            ]
+        }],
+        group: ['country'],
+        order: [[Sequelize.literal('`tblcountries.cnt`'), 'DESC']]
+       
+       
+    })
+    .then(result=>{
+
+        let nationality = [];
+            for (i = 0; i < result.length; i++) {
+                nationality.push({
+                    person_id: result[i].person_id,
+                    name: result[i].name,
+                    age: result[i].age,
+                    country: result[i].tblcountries[0].country,
+                    cnt: result[i].tblcountries[0].dataValues.cnt
+                });
+            }
+
+
+    _persons.findAll({
+        include: [{
+            model: _locations,
+            required: true,
+            attributes: [
+                'location',
+                [Sequelize.fn('count', Sequelize.col('location')), 'cnt']
+            ]
+        }],
+        group: ['location'],
+        order: [[Sequelize.literal('`tbllocations.cnt`'), 'DESC']]
+       
+       
+    })
+        .then(result => {
+           
+            let records = [];
+            for (i = 0; i < result.length; i++) {
+                
+             console.log();
+                records.push({
+                    person_id: result[i].person_id,
+                    name: result[i].name,
+                    age: result[i].age,
+                    location: result[i].tbllocations[0].location,
+                    cnt: result[i].tbllocations[0].dataValues.cnt
+                });
+            }
+        //    console.log(records);
+                res.render("covid19",
+                    {
+                    infected: records,  
+                    nationality:nationality,
+                    layout: false
+                })
+        }); 
+        
+    })
+  
 });
 router.get('/dashboard', ensureAuthenticated,myrole, (req, res) => {
     const systemroles = Menu(req.user.role_id, _roleassigments, _modules);
     res.render("index/dashboard", { systemroles: systemroles, title: 'Dashboard' })
-
 });
+
 router.get('/admin/ajaxuser/page/:page', (req, res) => {
     _roles.count()
     .then(cnt => {

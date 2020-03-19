@@ -5,9 +5,19 @@ $(document).ready(function() {
         $('input').removeClass('bordererror');
     });
     $('[data-toggle="tooltip"]').tooltip()
-    $("#sidebar-menu").mCustomScrollbar({
+    // $("#sidebar-menu").mCustomScrollbar({
+    //     theme: "minimal"
+    // });
+    $("#home").mCustomScrollbar({
         theme: "minimal"
     });
+    // $("#sidebar-menu").mCustomScrollbar({
+    //     theme: "minimal"
+    // });
+    // $("#sidebar-menu").mCustomScrollbar({
+    //     theme: "minimal"
+    // });
+
     $('#sidebarCollapse').on('click', function() {
         $('#sidebar, #content,.sticky').toggleClass('active');
         $('.collapse.in').toggleClass('in');
