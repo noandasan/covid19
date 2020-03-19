@@ -11,7 +11,7 @@
   <meta http-equiv="expires" content="0" />
   <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
   <meta http-equiv="pragma" content="no-cache" />
-  <title>{{title}}</title>
+  <title>Covid19 Saudi Arabia</title>
   <base href="/">
   <link rel="stylesheet" type="text/css" href="/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="/@fortawesome/fontawesome-free/css/fontawesome.min.css">
@@ -35,10 +35,37 @@
         fullscreenControl: false
       });
 
-      var script = document.createElement('script');
-      script.src = '2.5_week.geojsonp';
+     var script = document.createElement('script');
+     script.src = '/mapping';
 
-      document.getElementsByTagName('head')[0].appendChild(script);
+      var a=('{{person}}');
+
+
+
+      console.log(a);
+
+      let nVar={"type":"FeatureCollection"}
+
+       map.data.addGeoJson({
+      "type":"FeatureCollection",
+      "features":[
+         {
+        "type":"Feature",
+        "properties":{"mag":5},
+        "geometry":{"type":"Point","coordinates":[39.581840,24.521620]}
+        },
+         {
+        "type":"Feature",
+        "properties":{"mag":20},
+        "geometry":{"type":"Point","coordinates":[49.550326,27.036795]}
+        },
+
+       ]
+  });
+
+
+
+     // document.getElementsByTagName('head')[0].appendChild(script);
       map.data.setStyle(function (feature) {
         var magnitude = feature.getProperty('mag');
         return {
@@ -46,6 +73,7 @@
         };
       });
     }
+    
     function getCircle(magnitude) {
       return {
         path: google.maps.SymbolPath.CIRCLE,
@@ -56,9 +84,9 @@
         strokeWeight: .5
       };
     }
-    function eqfeed_callback(results) {
-      map.data.addGeoJson(results);
-    }
+    //function eqfeed_callback(results) {
+    //  map.data.addGeoJson(results);
+   // }
   </script>
   <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDS7BF2EAnf44NuVM97xewYK5qNbK1gF6s&callback=initMap">
@@ -69,51 +97,57 @@
   <div class="container-fluid">
     <nav id="sidebar">
           <div class="control-control">
-             <button type="button" id="sidebarCollapse" class="btn btn-modal-head btn-removepad" data-toggle="tooltip" data-placement="bottom" title="Pull-up">
+              <button type="button" id="sidebarCollapse" class="btn btn-modal-head btn-removepad" data-toggle="tooltip" data-placement="bottom" title="Pull-up">
                 <i class="fas fa-align-left"></i>
-             </button>
+              </button>
               <button type="button" id="accessadmin" class="btn btn-modal-head btn-removepad" data-toggle="tooltip" data-placement="bottom" title="Login">
-                <i class="fas fa-user-lock" ></i>
-             </button>
+              <i class="fas fa-user-lock" ></i>
+              </button>
 
-            <button type="button" id="share" class="btn btn-modal-head btn-removepad" data-toggle="tooltip" data-placement="bottom" title="Facebook">
-          <i class="fab fa-facebook-f"></i>
-             </button>
-   
-            <button type="button" id="tweet" class="btn btn-modal-head btn-removepad" data-toggle="tooltip" data-placement="bottom" title="Tweeter">
-          <i class="fab fa-twitter"></i>
-             </button>
-   
-        
-           
-            <button type="button" id="tweet" class="btn btn-modal-head btn-removepad" data-toggle="tooltip" data-placement="bottom" title="Tweeter">
-            <i class="fas fa-globe-asia"></i>
-             </button>
+              <button type="button" id="share" class="btn btn-modal-head btn-removepad" data-toggle="tooltip" data-placement="bottom" title="Facebook">
+                <i class="fab fa-facebook-f"></i>
+              </button>
+
+              <button type="button" id="tweet" class="btn btn-modal-head btn-removepad" data-toggle="tooltip" data-placement="bottom" title="Tweeter">
+               <i class="fab fa-twitter"></i>
+              </button>
+
+              <button type="button" id="tweet" class="btn btn-modal-head btn-removepad" data-toggle="tooltip" data-placement="bottom" title="Tweeter">
+                <i class="fas fa-globe-asia"></i>
+              </button>
           </div>
       <div class="sidebar-header btn-modal-head">
         <h5>Covid19-Saudi Arabia</h5>
+        <div class='time-frame'>
+    <div id='date-part'></div>
+    <div id='time-part'></div>
+</div>
         <div class="row">
           <div class="col-md-6 toplabel badge-yellow"><i class="far fa-hospital"></i> Active cases</div>
           <div class="col-md-6 text-right">
-            <h6><span class="badge badge-yellow-bg">500</span></h6>
+            <h6><span class="badge badge-yellow-bg">{{confirmed}}</span></h6>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6 toplabel badge-green"><i class="fas fa-briefcase-medical"></i> Recovered cases</div>
           <div class="col-md-6 text-right badge-green">
-            <h6><span class="badge badge-green-bg">500</span></h6>
+            <h6><span class="badge badge-green-bg">{{recovered}}</span></h6>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6 toplabel badge-red"><i class="fas fa-skull"></i> Fatal cases</div>
           <div class="col-md-6 text-right badge-red">
-            <h6><span class="badge badge-red-bg">500</span></h6>
+            <h6><span class="badge badge-red-bg">{{fatal}}</span></h6>
           </div>
         </div>
         <h6 class="a">Total confirmed cases</h6>
         <div class="row">
           <div class="col-md-12 text-center badge-red">
-            <h3><span class="badge badge-red-bg">500</span></h3>
+            <h3><span class="badge badge-red-bg">{{totalconfirmed}}</span></h3>
+           
+
+
+
           </div>
         </div>
       </div>

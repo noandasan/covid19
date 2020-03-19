@@ -2,23 +2,22 @@ $(document).ready(function () {
     
     var New=true;
     
+ 
+
     $('.country_id').click(function(){
-     
       $('#message_country_id').hide();
     });
     $('.location_id').click(function(){
       $('#message_location_id').hide();
     });
-
-
-
+  
     $('#btn-NewPerson').click(function(){
         New=true;
         $('#id').val('');
         $('#title').text('New Person');
         $('#Save').text('Save');
         $('#person_id').prop('disabled', false);
-
+        $('#status-confirm').attr('checked', true);
         $('#dialog-newPerson').modal({
             keyboard: false
         });
@@ -60,7 +59,8 @@ $(document).ready(function () {
                 name: $('#name').val(),
                 age: $('#age').val(),
                 location_id: $('#location_id').val(),
-                country_id: $('#country_id').val()
+                country_id: $('#country_id').val(),
+                status: $("input[name='status']:checked").val()
             }
 
             if(!data.country_id){
@@ -98,7 +98,8 @@ $(document).ready(function () {
                 name: $('#name').val(),
                 age: $('#age').val(),
                 location_id: $('#location_id').val(),
-                country_id: $('#country_id').val()
+                country_id: $('#country_id').val(),
+                status: $("input[name='status']:checked").val()
            }
            if(!data.person_id || !data.name || !data.age || !data.location_id || !data.country_id){
             return;

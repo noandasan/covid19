@@ -82,6 +82,7 @@ router.get('/master/persons', ensureAuthenticated, myrole, (req, res) => {
                                             person_id: result[i].person_id,
                                             name: result[i].name,
                                             age: result[i].age,
+                                            status: result[i].status,
                                             country: result[i].tblcountries[0].country,
                                             location: result[i].tbllocations[0].location
                                         });
@@ -109,7 +110,8 @@ router.post('/person/newperson', (req, res) => {
         name: req.body.name,
         age: req.body.age,
         location_id: req.body.location_id,
-        country_id: req.body.country_id
+        country_id: req.body.country_id,
+        status: req.body.status
     }
     try {
         _persons.findOne({
@@ -157,13 +159,15 @@ router.post('/person/search', (req, res) => {
     if (field === "age") {
         whereStatement.age = { [Op.like]: '%' + personData.searchkey + '%' };
     }
+    if (field === "status") {
+        whereStatement.status = { [Op.like]: '%' + personData.searchkey + '%' };
+    }
     if (field === "nationality") {
         whereStatement2.country = { [Op.like]: '%' + personData.searchkey + '%' };
     }
     if (field === "location") {
         whereStatement1.location = { [Op.like]: '%' + personData.searchkey + '%' };
     }
-
 
     if (field === "") {
         whereStatement.person_id = { [Op.like]: '%%' };
@@ -216,6 +220,7 @@ router.post('/person/search', (req, res) => {
                             person_id: result[i].person_id,
                             name: result[i].name,
                             age: result[i].age,
+                            status: result[i].status,
                             country: result[i].tblcountries[0].country,
                             location: result[i].tbllocations[0].location
                         });
@@ -256,7 +261,6 @@ router.post('/person/edit', (req, res) => {
     })
         .then(result => {
             res.send({ person: result });
-
         });
 });
 
@@ -268,7 +272,8 @@ router.post('/person/editperson', (req, res) => {
             name: req.body.name,
             age: req.body.age,
             location_id: req.body.location_id,
-            country_id: req.body.country_id
+            country_id: req.body.country_id,
+            status: req.body.status
         },
             {
                 where: {

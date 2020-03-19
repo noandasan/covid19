@@ -1,6 +1,9 @@
 $(document).ready(function() {
     NProgress.done();
   
+   
+
+
     $('input').on('focus',function(){
         $('input').removeClass('bordererror');
     });
@@ -11,9 +14,9 @@ $(document).ready(function() {
     $("#home").mCustomScrollbar({
         theme: "minimal"
     });
-    // $("#sidebar-menu").mCustomScrollbar({
-    //     theme: "minimal"
-    // });
+    $("#profile").mCustomScrollbar({
+        theme: "minimal"
+    });
     // $("#sidebar-menu").mCustomScrollbar({
     //     theme: "minimal"
     // });
@@ -55,6 +58,17 @@ $(document).ready(function() {
 
    // $('#email_login').focus();
  
+        var interval = setInterval(function() {
+            var momentNow = moment();
+            $('#date-part').html(momentNow.format('YYYY MMMM DD') + ' '
+                                + momentNow.format('dddd')
+                                .substring(0,3).toUpperCase());
+            $('#time-part').html(momentNow.format('A hh:mm:ss'));
+        }, 100);
+
+        // $('#stop-interval').on('click', function() {
+        //     clearInterval(interval);
+        // });
   
 });
 

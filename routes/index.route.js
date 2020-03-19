@@ -12,80 +12,149 @@ const _persons = db.Persons;
 const _countries = db.Countries;
 const _locations = db.Locations;
 
+router.get('/mapping', (req, res) => {
+    var person =  {
+        "type":"FeatureCollection",
+        "features":[
+           {
+          "type":"Feature",
+          "properties":{"mag":1},
+          "geometry":{"type":"Point","coordinates":[39.581840,24.521620]}
+          },
+           {
+          "type":"Feature",
+          "properties":{"mag":70},
+          "geometry":{"type":"Point","coordinates":[49.550326,27.036795]}
+          },
+  
+         ]
+    }   
+    res.send({person:person});
+});
+
 
 
 router.get('/', (req, res) => {
     _persons.hasMany(_locations,{ sourceKey: 'location_id', foreignKey: 'location_id' });
     _persons.hasMany(_countries,{ sourceKey: 'country_id', foreignKey: 'country_id' });
 
-    _persons.findAll({
-        include: [{
-            model: _countries,
-            required: true,
-            attributes: [
-                'country',
-                [Sequelize.fn('count', Sequelize.col('country')), 'cnt']
-            ]
-        }],
-        group: ['country'],
-        order: [[Sequelize.literal('`tblcountries.cnt`'), 'DESC']]
-       
-       
-    })
-    .then(result=>{
+    var person =  {
+        "type":"FeatureCollection",
+        "features":[
+           {
+          "type":"Feature",
+          "properties":{"mag":1},
+          "geometry":{"type":"Point","coordinates":[39.581840,24.521620]}
+          },
+           {
+          "type":"Feature",
+          "properties":{"mag":70},
+          "geometry":{"type":"Point","coordinates":[49.550326,27.036795]}
+          },
+  
+         ]
+    }
 
-        let nationality = [];
-            for (i = 0; i < result.length; i++) {
-                nationality.push({
-                    person_id: result[i].person_id,
-                    name: result[i].name,
-                    age: result[i].age,
-                    country: result[i].tblcountries[0].country,
-                    cnt: result[i].tblcountries[0].dataValues.cnt
-                });
+
+_persons.count()
+.then(totalconfirmed=>{
+
+        _persons.count({
+            where:{
+                status: 'Confirmed Case'
             }
-
-
-    _persons.findAll({
-        include: [{
-            model: _locations,
-            required: true,
-            attributes: [
-                'location',
-                [Sequelize.fn('count', Sequelize.col('location')), 'cnt']
-            ]
-        }],
-        group: ['location'],
-        order: [[Sequelize.literal('`tbllocations.cnt`'), 'DESC']]
-       
-       
-    })
-        .then(result => {
-           
-            let records = [];
-            for (i = 0; i < result.length; i++) {
+        }).then(confirmed=>{
+            _persons.count({
+                where:{
+                    status: 'Recovered Case'
+                }
+            }).then(recovered=>{
+                _persons.count({
+                    where:{
+                        status: 'Fatal Case'
+                    }
+                }).then(fatal=>{
+                    _persons.findAll({
+                        include: [{
+                            model: _countries,
+                            required: true,
+                            attributes: [
+                                'country',
+                                [Sequelize.fn('count', Sequelize.col('country')), 'cnt']
+                            ]
+                        }],
+                        group: ['country'],
+                        order: [[Sequelize.literal('`tblcountries.cnt`'), 'DESC']]
+                    })
+                    .then(result=>{
                 
-             console.log();
-                records.push({
-                    person_id: result[i].person_id,
-                    name: result[i].name,
-                    age: result[i].age,
-                    location: result[i].tbllocations[0].location,
-                    cnt: result[i].tbllocations[0].dataValues.cnt
+                        let nationality = [];
+                            for (i = 0; i < result.length; i++) {
+                                nationality.push({
+                                    person_id: result[i].person_id,
+                                    name: result[i].name,
+                                    age: result[i].age,
+                                    country: result[i].tblcountries[0].country,
+                                    cnt: result[i].tblcountries[0].dataValues.cnt
+                                });
+                            }
+                    _persons.findAll({
+                        include: [{
+                            model: _locations,
+                            required: true,
+                            attributes: [
+                                'location',
+                                [Sequelize.fn('count', Sequelize.col('location')), 'cnt']
+                            ]
+                        }],
+                        group: ['location'],
+                        order: [[Sequelize.literal('`tbllocations.cnt`'), 'DESC']]
+                    
+                    
+                    })
+                        .then(result => {
+                        
+                            let records = [];
+                            for (i = 0; i < result.length; i++) {
+                                
+                            console.log();
+                                records.push({
+                                    person_id: result[i].person_id,
+                                    name: result[i].name,
+                                    age: result[i].age,
+                                    location: result[i].tbllocations[0].location,
+                                    cnt: result[i].tbllocations[0].dataValues.cnt
+                                });
+                            }
+                        //    console.log(records);
+                        //var person = JSON.parse(person);
+                                res.render("covid19",
+                                    {
+                                   person:person,
+                                    totalconfirmed: totalconfirmed,
+                                    confirmed: confirmed,
+                                    recovered: recovered,
+                                    fatal:fatal,
+                                    infected: records,  
+                                    nationality:nationality,
+                                    layout: false
+                                })
+                               
+                        }); 
+                        
+                    })
                 });
-            }
-        //    console.log(records);
-                res.render("covid19",
-                    {
-                    infected: records,  
-                    nationality:nationality,
-                    layout: false
-                })
-        }); 
-        
-    })
+            });
+        });
+});
+
+
+
+   
   
 });
+
+
 router.get('/dashboard', ensureAuthenticated,myrole, (req, res) => {
     const systemroles = Menu(req.user.role_id, _roleassigments, _modules);
     res.render("index/dashboard", { systemroles: systemroles, title: 'Dashboard' })
