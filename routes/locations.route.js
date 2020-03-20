@@ -182,15 +182,10 @@ router.post('/location/edit', (req, res) => {
  //submit edit country
  router.post('/location/editlocation', (req, res) => {
     try {
-        _locations.findOne({
-            where: { location: req.body.location }
-        })
-        .then(count=>{
-            if (!count) {
                 _locations.update({
                     location: req.body.location,
                     latitude: req.body.latitude,
-                    latitude: req.body.latitude
+                    longitude: req.body.longitude
                    },
                    {
                        where:{
@@ -200,14 +195,6 @@ router.post('/location/edit', (req, res) => {
                    .then(result=>{
                          res.send({ status: 1 });
                    });
-            } else {
-                    res.send({ status: 2 });
-            }
-        });
-
-
-
-
      
     }
     catch (err) {

@@ -135,7 +135,7 @@
 {{!-- New Country --}}
 <div class="modal fade" id="dialog-newLocation" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
     <form method="POST" id="formLocation">
-        <div class="modal-dialog modal-md" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header btn-modal-head">
                     <h5 class="modal-title" id="title">New Location</h5>
@@ -175,6 +175,14 @@
                                             name="longitude" value="" class="form-control form-control-sm"
                                             placeholder="Longitude">
                                     </div>
+                                </div>
+
+                                 <div class="form-group row">
+                                     <div id="map"></div>
+                                      <script type="text/javascript" src="/js/myjs/map.js"></script>
+      <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDS7BF2EAnf44NuVM97xewYK5qNbK1gF6s&callback=initMap">
+    </script>
                                 </div>
 
                             </div>

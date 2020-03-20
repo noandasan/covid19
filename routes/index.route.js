@@ -13,23 +13,75 @@ const _countries = db.Countries;
 const _locations = db.Locations;
 
 router.get('/mapping', (req, res) => {
-    var person =  {
+    var a =  {
         "type":"FeatureCollection",
         "features":[
            {
           "type":"Feature",
-          "properties":{"mag":1},
+          "properties":{"mag":4},
           "geometry":{"type":"Point","coordinates":[39.581840,24.521620]}
           },
            {
           "type":"Feature",
-          "properties":{"mag":70},
+          "properties":{"mag":30},
           "geometry":{"type":"Point","coordinates":[49.550326,27.036795]}
           },
   
          ]
     }   
-    res.send({person:person});
+    _persons.findAll({
+        include: [{
+            model: _locations,
+            required: true,
+            attributes: [
+                'location',
+                'latitude',
+                'longitude',
+                [Sequelize.fn('count', Sequelize.col('location')), 'cnt']
+            ]
+        }],
+        group: ['location'],
+        order: [[Sequelize.literal('`tbllocations.cnt`'), 'DESC']]
+    })
+        .then(result => {
+            let records ={};
+
+        
+          var lati;
+          var longti;
+
+var b;
+var x; var obj;
+
+
+            b='{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"mag": "0"},"geometry":{"type":"Point","coordinates":[26.9716430,49.5769590]}}]}';
+
+            var obj = JSON.parse(b);
+
+            for (i = 0; i < result.length; i++) {
+               lati= parseFloat(result[i].tbllocations[0].latitude);
+               longti=parseFloat(result[i].tbllocations[0].longitude);
+
+               obj['features'].push({
+                "type":"Feature",
+                "properties":{"mag": result[i].tbllocations[0].dataValues.cnt},
+                "geometry":{"type":"Point","coordinates":[longti,lati]}
+                });
+            }
+          
+          //  var jsonStr = '{"theTeam":[{"teamId":"1","status":"pending"},{"teamId":"2","status":"member"},{"teamId":"3","status":"member"}]}';
+
+         // var obj = JSON.parse(obj);
+         //   obj['theTeam'].push({"teamId":"4","status":"pending"});
+           jsonStr = JSON.stringify(obj);
+           obj = JSON.parse(jsonStr);
+
+           // console.log(obj);
+                 
+
+            res.send({person:obj});
+        });
+
 });
 
 
@@ -37,24 +89,6 @@ router.get('/mapping', (req, res) => {
 router.get('/', (req, res) => {
     _persons.hasMany(_locations,{ sourceKey: 'location_id', foreignKey: 'location_id' });
     _persons.hasMany(_countries,{ sourceKey: 'country_id', foreignKey: 'country_id' });
-
-    var person =  {
-        "type":"FeatureCollection",
-        "features":[
-           {
-          "type":"Feature",
-          "properties":{"mag":1},
-          "geometry":{"type":"Point","coordinates":[39.581840,24.521620]}
-          },
-           {
-          "type":"Feature",
-          "properties":{"mag":70},
-          "geometry":{"type":"Point","coordinates":[49.550326,27.036795]}
-          },
-  
-         ]
-    }
-
 
 _persons.count()
 .then(totalconfirmed=>{
@@ -130,7 +164,7 @@ _persons.count()
                         //var person = JSON.parse(person);
                                 res.render("covid19",
                                     {
-                                   person:person,
+                                 
                                     totalconfirmed: totalconfirmed,
                                     confirmed: confirmed,
                                     recovered: recovered,
