@@ -1,8 +1,8 @@
 const env = {
-  database: 'covid19',
-  username: 'root',
-  password: '',
-  host: 'localhost',
+  database: 'smharabi_covid',
+  username: 'smharabi_covid',
+  password: 'Da&5]i2MWTPv',
+  host: '108.179.237.40',
   dialect: 'mysql',
   pool: {
 	  max: 5,
