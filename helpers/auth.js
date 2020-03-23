@@ -1,8 +1,8 @@
 const db = require('../config/db.config.js');
-const Sequelize = require('Sequelize');
+const Sequelize = require('sequelize');
 const _roleassigments = db.Roleassigments;
 const _modules = db.Modules;
-const Op = require('Sequelize').Op;
+const Op = require('sequelize').Op;
 
 module.exports = {
     ensureAuthenticated: function(req, res, next) {
