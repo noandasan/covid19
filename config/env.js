@@ -4,6 +4,7 @@ const env = {
   password: '.Cn;n]%n)ivP',
   host: '108.179.237.41',
   dialect: 'mysql',
+	port: 3306
   pool: {
 	  max: 5,
 	  min: 0,
