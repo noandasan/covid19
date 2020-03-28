@@ -1,8 +1,8 @@
 const env = {
-  database: 'covid19',
-  username: 'covid19',
-  password: 'covid19',
-  host: '94.97.246.47',
+  database: 'db',
+  username: 'user',
+  password: 'pass',
+  host: 'host',
   dialect: 'mysql',
 	port: 3306,
   pool: {
