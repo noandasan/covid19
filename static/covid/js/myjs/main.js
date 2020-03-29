@@ -1,4 +1,5 @@
 $(document).ready(function() {
+     import moment from 'moment'
     NProgress.done();
   
    
