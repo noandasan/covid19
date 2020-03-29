@@ -13,8 +13,7 @@ var paginate = require('handlebars-paginate');
 
 app.use('',express.static(path.join(__dirname, '/static/')));
 app.use('',express.static(path.join(__dirname, '/node_modules/')));
-app.use('',express.static(path.join(__dirname, '/node_modules/fortawesome/fontawesome-free/')));
-app.use('',express.static(path.join(__dirname, '/node_modules/jquery/dist/')));
+
 
 require('./config/passport')(passport);
 
